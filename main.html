@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бренд-гайд обложек 1280x720</title>
+    
+    <!-- Подключение шрифтов (оригинальные + аналоги из скринов) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Lilita+One&family=Paytone+One&family=Fredoka:wght@700&family=Nunito:wght@400;700;900&family=Montserrat:wght@900&family=Russo+One&family=Baloo+2:wght@800&family=Alfa+Slab+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #f7f6f2;
+            --bg-card: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666;
+            
+            /* Цвета из гайда */
+            --pink: #E8215F;
+            --teal: #0E7C86;
+            --green: #2E7D32;
+            --light-green: #4C8C2E;
+            --burgundy: #7A1030;
+            --black: #111111;
+            --lime: #B4E600;
+            --gray: #e5e5e5;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Nunito', sans-serif;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Типографика */
+        h1 { font-size: 2.8rem; font-weight: 900; margin: 0.5rem 0 1rem; letter-spacing: -0.02em; }
+        h2 { font-size: 2rem; margin: 3rem 0 1.5rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.5rem; }
+        h3 { font-size: 1.5rem; margin: 2rem 0 1rem; }
+        
+        .meta-date { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: -0.5rem; display: block; }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+        
+        p { margin-bottom: 1.2rem; color: #333; }
+        
+        /* Секция гайда */
+        .section-header {
+            color: var(--pink);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Палитры плашек */
+        .palette-row {
+            display: flex;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .color-swatches {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .swatch {
+            width: 80px;
+            height: 24px;
+            border-radius: 6px;
+        }
+        .palette-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        .palette-info strong {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .palette-info span {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Базовые цвета */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .color-item {
+            text-align: left;
+        }
+        .color-item .swatch-big {
+            width: 100%;
+            height: 60px;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+        .color-item .name { font-weight: 700; font-size: 0.9rem; display: block; }
+        .color-item .hex { color: #888; font-size: 0.8rem; }
+
+        /* ========================================= */
+        /* НОВЫЙ РАЗДЕЛ: ШРИФТЫ (ТОЧНО ПО СКРИНАМ) */
+        /* ========================================= */
+        
+        .font-showcase {
+            margin: 2rem 0 3rem 0;
+        }
+
+        .font-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .font-header {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .font-header .font-name {
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .font-header .font-tag {
+            color: var(--pink);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .font-header .font-desc {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Макет превьюшки обложки */
+        .preview-wrapper {
+            display: flex;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fafafa;
+            position: relative;
+            aspect-ratio: 16/9;
+            margin-bottom: 1rem;
+        }
+        
+        /* Фон превью */
+        .preview-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Контент внутри превью */
+        .preview-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        /* Текстовая часть */
+        .preview-text-side {
+            flex: 1;
+            padding: 2% 3%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .preview-text-side .text-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .text-row {
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            display: inline-block;
+            border-radius: 4px;
+            width: fit-content;
+            line-height: 1.2;
+        }
+        .text-row.top-line {
+            font-size: 1.8vw;
+        }
+        .text-row.bottom-line {
+            font-size: 2.6vw;
+        }
+        .text-row.dark-text {
+            color: #111;
+        }
+
+        .preview-text-side .subtitle-line {
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1vw;
+            margin-bottom: 6px;
+        }
+        .preview-text-side .eng-line {
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1vw;
+            opacity: 0.4;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Фото-часть */
+        .preview-photo-side {
+            flex: 1;
+            position: relative;
+            background-size: cover;
+            background-position: center right 10%;
+            background-repeat: no-repeat;
+        }
+
+        /* Технические подписи снизу */
+        .font-meta {
+            color: #999;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            margin-top: 0.5rem;
+        }
+        
+        /* ========================================= */
+        /* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ (ФОН И РАЗМЕРЫ) */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            .preview-text-side .text-row.top-line { font-size: 3.5vw; }
+            .preview-text-side .text-row.bottom-line { font-size: 5vw; }
+            .preview-text-side .subtitle-line { font-size: 2.2vw; }
+            .preview-text-side .eng-line { font-size: 1.5vw; }
+        }
+        @media (max-width: 600px) {
+            .preview-wrapper { aspect-ratio: 4/3; flex-direction: column; }
+            .preview-text-side { padding: 4%; align-items: flex-start; }
+            .preview-photo-side { height: 50%; background-position: center bottom 10%; }
+            .preview-text-side .text-row.top-line { font-size: 5vw; }
+            .preview-text-side .text-row.bottom-line { font-size: 7vw; }
+            .preview-text-side .subtitle-line { font-size: 2.5vw; }
+            .preview-text-side .eng-line { font-size: 2vw; }
+        }
+
+        /* ПРОМПТ-ШАБЛОН */
+        .prompt-block {
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .prompt-copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* ЧЕК-ЛИСТ */
+        .checklist-item {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--pink);
+        }
+        .checklist-item label {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1.5rem; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            .color-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1rem; }
+            .palette-row { flex-direction: column; align-items: flex-start; }
+            .swatch { width: 100%; }
+            .prompt-block { font-size: 0.8rem; padding: 1rem; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 0.5rem; }
+            .container { padding: 1rem; border-radius: 10px; }
+            h1 { font-size: 1.6rem; }
+            .checklist-item { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Заголовок -->
+    <span class="meta-date">ВЕРСИЯ 2 • АВГУСТ 2026</span>
+    <h1>Бренд-гайд обложек</h1>
+    <p class="subtitle">Канал визажиста. Как собирать обложку 1280×720 в Gemini / Nano Banana так, чтобы стиль канала оставался узнаваемым.</p>
+    
+    <hr style="border: 0; border-top: 1px solid #e0e0e0; margin: 2rem 0;">
+
+    <!-- ГЛАВНОЕ ПРАВИЛО -->
+    <div class="section-header">Главное правило</div>
+    <p>Вы прикрепляете <strong>своё фото</strong>. Значит первая задача модели — не «нарисовать девушку-визажиста», а <strong>сохранить человека с фото целиком без изменений</strong>: лицо, тело, поза, руки, одежда, украшения. Дальше вокруг него собирается обложка.</p>
+    <ol style="margin: 1rem 0 2rem 1.5rem;">
+        <li>Прикрепите фото — лучше по грудь, ровный свет, живая эмоция или жест рукой.</li>
+        <li>Скопируйте шаблон промпта, замените значения в квадратных скобках.</li>
+        <li>Отправьте фото и текст одним сообщением.</li>
+        <li>Донастраивайте в том же чате точечно, не начиная заново.</li>
+    </ol>
+
+    <!-- ПАЛИТРА ПЛАШЕК -->
+    <div class="section-header">1 · Палитра плашек</div>
+    <p>Плашка — это две или три строки разного цвета друг под другом. Верхняя короче и акцентнее, нижняя крупнее и несёт основной посыл. Один акцентный цвет на обложку; пары между собой не смешивать.</p>
+
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--green);"></div><div class="swatch" style="background: var(--pink);"></div></div>
+        <div class="palette-info"><strong>Зелёный #2E7D32 + фуксия #E8215F</strong><span>Лайфхаки, позитивные подборки. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--burgundy);"></div><div class="swatch" style="background: var(--light-green);"></div></div>
+        <div class="palette-info"><strong>Бордовый #7A1030 + зелёный #4C8C2E</strong><span>«Секреты», экспертные разборы. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--black);"></div><div class="swatch" style="background: var(--pink);"></div></div>
+        <div class="palette-info"><strong>Чёрный #111111 + фуксия #E8215F</strong><span>Мифы, разоблачения, эмоции. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--pink);"></div><div class="swatch" style="background: var(--teal);"></div></div>
+        <div class="palette-info"><strong>Фуксия #E8215F + тил #0E7C86</strong><span>Серийные выпуски (#1, #2). Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--black);"></div><div class="swatch" style="background: var(--lime);"></div></div>
+        <div class="palette-info"><strong>Чёрный #111111 + лайм #B4E600</strong><span>Провокация, «раскрываю секреты». На лайме текст чёрный.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--teal);"></div></div>
+        <div class="palette-info"><strong>Тил #0E7C86 — одна плашка</strong><span>Короткий заголовок в 1–2 слова. Текст белый.</span></div>
+    </div>
+
+    <!-- БАЗОВЫЕ ЦВЕТА -->
+    <h3>Базовые цвета — из них собираются все пары</h3>
+    <p>Палитра закрыта: семь цветов. Новые пары составляйте только из них, иначе обложки перестанут выглядеть одной серией. Правило пары — один цвет тёмный и глубокий, второй яркий или светлый; два ярких рядом не ставить.</p>
+    <div class="color-grid">
+        <div class="color-item"><div class="swatch-big" style="background: var(--pink);"></div><span class="name">Фуксия</span><span class="hex">#E8215F</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--teal);"></div><span class="name">Тил</span><span class="hex">#0E7C86</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--green);"></div><span class="name">Зелёный</span><span class="hex">#2E7D32</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--light-green);"></div><span class="name">Травяной</span><span class="hex">#4C8C2E</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--burgundy);"></div><span class="name">Бордовый</span><span class="hex">#7A1030</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--black);"></div><span class="name">Чёрный</span><span class="hex">#111111</span></div>
+        <div class="color-item"><div class="swatch-big" style="background: var(--lime);"></div><span class="name">Лайм</span><span class="hex">#B4E600</span></div>
+    </div>
+
+    <!-- ДОПОЛНИТЕЛЬНЫЕ ПАРЫ -->
+    <h3>Дополнительные пары</h3>
+    <p>Собраны из тех же семи цветов, поэтому встают в один ряд с базовыми. Расшифровка — под каким настроением темы работает пара.</p>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--teal);"></div><div class="swatch" style="background: var(--pink);"></div></div>
+        <div class="palette-info"><strong>Тил #0E7C86 + фуксия #E8215F</strong><span>Обзоры и сравнения: спокойный ввод, яркий вывод. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--burgundy);"></div><div class="swatch" style="background: var(--pink);"></div></div>
+        <div class="palette-info"><strong>Бордовый #7A1030 + фуксия #E8215F</strong><span>Личные истории, вечерний макияж. Самая «дорогая» пара. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--black);"></div><div class="swatch" style="background: var(--teal);"></div></div>
+        <div class="palette-info"><strong>Чёрный #111111 + тил #0E7C86</strong><span>Инструкции и уроки: сдержанно, без крика. Текст белый.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--burgundy);"></div><div class="swatch" style="background: var(--lime);"></div></div>
+        <div class="palette-info"><strong>Бордовый #7A1030 + лайм #B4E600</strong><span>Резкие мнения, «так делать нельзя». На лайме текст чёрный.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--green);"></div><div class="swatch" style="background: var(--lime);"></div></div>
+        <div class="palette-info"><strong>Зелёный #2E7D32 + лайм #B4E600</strong><span>Свежесть, летние и «чистые» темы, уход. На лайме текст чёрный.</span></div>
+    </div>
+    <div class="palette-row">
+        <div class="color-swatches"><div class="swatch" style="background: var(--pink);"></div><div class="swatch" style="background: var(--black);"></div></div>
+        <div class="palette-info"><strong>Фуксия #E8215F + чёрный #111111</strong><span>Итоги, подборки «лучшее». Обратный порядок базовой пары. Текст белый.</span></div>
+    </div>
+    
+    <div style="background: #fdf2f4; padding: 1.2rem; border-radius: 12px; margin-top: 2rem;">
+        <p style="margin:0; color: #7A1030;"><strong>Чего не делать:</strong> фуксия + лайм, тил + зелёный, тил + травяной. Два соседних по тону цвета вместе выглядят грязно и теряют контраст в превью.</p>
+    </div>
+
+    <!-- СТИЛЬ ПЛАШКИ -->
+    <div class="section-header" style="margin-top: 3rem;">Стиль плашки — три рабочих варианта</div>
+    <p><strong>Флэт</strong> — ровные прямоугольники, чистая заливка, белый текст капсом.</p>
+    <p><strong>Флэт с белым контуром</strong> — то же, но по внешнему контуру блока белая рамка 6–10 px. На канале встречается часто.</p>
+    <p><strong>Кисть</strong> — плашка как мазок широкой кистью с рваными краями, текст с мягкой объёмной тенью.</p>
+    <p>Наклон: в основном горизонтально, лёгкий поворот 1–3° допустим. Сильный наклон — нет.</p>
+    
+    <div style="background: #f5f5f5; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;">
+        <p style="margin:0; font-size: 0.95rem;"><strong>Фон всегда светлый:</strong> голубое небо с облаками, розовое или пастельное боке, тёплый персиково-кремовый градиент, летняя зелень. Тёмный фон не используется. Исключение — формат «до/после»: нейтральный студийный серый.</p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- РАЗДЕЛ 2 · ШРИФТЫ (ПОЛНОСТЬЮ ПЕРЕДЕЛАНО)    -->
+    <!-- ========================================== -->
+    <div class="section-header">2 · Шрифты</div>
+    <p><strong>Заголовок:</strong> жирный, широкий, слегка скруглённый гротеск, капсом, плотный трекинг. Максимум 5 слов, крупно.</p>
+
+    <!-- Фото девушки (референс из скриншотов) -->
+    <!-- Я использую одну и ту же картинку с имитацией образа, чтобы везде была "одна и та же девушка" -->
+    <?php 
+        $girl_photo = 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=800'; 
+    ?>
+
+    <div class="font-showcase">
+        
+        <!-- 1. Bowlby One SC -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Bowlby One SC</span>
+                <span class="font-tag">основной</span>
+                <span class="font-desc">Очень жирный, плотные буквы, ближе всего к обложкам канала.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #f9dbe6;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--pink); font-family: 'Bowlby One SC', sans-serif;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--teal); font-family: 'Bowlby One SC', sans-serif;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--teal); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                        <div class="eng-line" style="font-family: 'Bowlby One SC', sans-serif;">QUICK HAIRSTYLES</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                кириллица — аналог Montserrat 900 · внизу настоящий Bowlby One SC на латинице
+            </div>
+        </div>
+
+        <!-- 2. Grobold -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Grobold</span>
+                <span class="font-desc">Толстый, плотный, минимальные просветы. Стиль вирусных превью.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #e5f1fa;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--black); font-family: 'Baloo 2', sans-serif; font-weight: 800;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line dark-text" style="background: var(--lime); font-family: 'Baloo 2', sans-serif; font-weight: 800;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                нет в Google Fonts · показан ближайший аналог Baloo 2 ExtraBold
+            </div>
+        </div>
+
+        <!-- 3. Lilita One -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Lilita One</span>
+                <span class="font-desc">Мягче Bowlby, скруглённые углы, очень читаемый. Частый шрифт beauty-обложек.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #fbe3d6;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--green); font-family: 'Lilita One', sans-serif;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--pink); font-family: 'Lilita One', sans-serif;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--burgundy); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                        <div class="eng-line" style="font-family: 'Lilita One', sans-serif;">QUICK HAIRSTYLES</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                кириллица — аналог Baloo 2 ExtraBold · внизу настоящий Lilita One
+            </div>
+        </div>
+
+        <!-- 4. Paytone One -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Paytone One</span>
+                <span class="font-desc">Компактный, как верхние строки в референсах. Читается в маленьком размере.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #f0f5e6;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--burgundy); font-family: 'Paytone One', sans-serif;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--light-green); font-family: 'Paytone One', sans-serif;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--burgundy); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                        <div class="eng-line" style="font-family: 'Paytone One', sans-serif;">QUICK HAIRSTYLES</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                кириллица — аналог Nunito Black · внизу настоящий Paytone One
+            </div>
+        </div>
+
+        <!-- 5. Fredoka Bold -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Fredoka Bold</span>
+                <span class="font-desc">Современный округлый, менее агрессивный. Хорош для женской тематики.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #f0e2f5;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--teal); font-family: 'Fredoka', sans-serif; font-weight: 700;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--pink); font-family: 'Fredoka', sans-serif; font-weight: 700;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--teal); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                Fredoka; если кириллица не подгрузилась — аналог Nunito Black
+            </div>
+        </div>
+
+        <!-- 6. Genty Bold -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Genty Bold</span>
+                <span class="font-desc">Более дорогая и современная стилистика. Сочный и массивный.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #e6f1f5;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--black); font-family: 'Russo One', sans-serif;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--teal); font-family: 'Russo One', sans-serif;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--black); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                нет в Google Fonts · показан ближайший аналог Russo One
+            </div>
+        </div>
+
+        <!-- 7. Cooper Black -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Cooper Black</span>
+                <span class="font-desc">Та же толщина, но ретро-характер. Только для отдельных слов.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #fae8e1;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--burgundy); font-family: 'Baloo 2', sans-serif; font-weight: 800;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line" style="background: var(--pink); font-family: 'Baloo 2', sans-serif; font-weight: 800;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--burgundy); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                        <div class="eng-line" style="font-family: 'Alfa Slab One', sans-serif;">QUICK HAIRSTYLES</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                кириллица — аналог Baloo 2 ExtraBold · внизу ретро-характер на латинице (Alfa Slab One)
+            </div>
+        </div>
+
+        <!-- 8. Luckiest Guy -->
+        <div class="font-card">
+            <div class="font-header">
+                <span class="font-name">Luckiest Guy</span>
+                <span class="font-desc">Игровой, эмоциональный. Менее универсален.</span>
+            </div>
+            <div class="preview-wrapper">
+                <div class="preview-bg" style="background: #f0f5e8;"></div>
+                <div class="preview-content">
+                    <div class="preview-text-side">
+                        <div class="text-block">
+                            <div class="text-row top-line" style="background: var(--green); font-family: 'Baloo 2', sans-serif; font-weight: 800;">БЫСТРЫЕ</div>
+                            <div class="text-row bottom-line dark-text" style="background: var(--lime); font-family: 'Baloo 2', sans-serif; font-weight: 800;">ПРИЧЕСКИ</div>
+                        </div>
+                        <div class="subtitle-line" style="color: var(--green); font-family: 'Montserrat', sans-serif; font-weight: 900;">Голливудская волна</div>
+                        <div class="eng-line" style="font-family: 'Luckiest Guy', sans-serif;">QUICK HAIRSTYLES</div>
+                    </div>
+                    <div class="preview-photo-side" style="background-image: url('<?php echo $girl_photo; ?>');"></div>
+                </div>
+            </div>
+            <div class="font-meta">
+                масштаб 1:2 · в кадре 1280×720: верх 65 px, низ 85 px, подзаголовок 30 px<br>
+                кириллица — аналог Baloo 2 ExtraBold · внизу настоящий Luckiest Guy
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Описательные тексты под шрифтами -->
+    <p>Пробы показаны в масштабе 1:2 от кадра 1280×720 — так обложка выглядит в ленте YouTube. Размеры одинаковы во всех пробах: верхняя строка 65 px, нижняя 85 px, подзаголовок 30 px в полном размере — как на реальных обложках канала. Где у шрифта нет кириллицы, показан ближайший русский аналог по плотности и округлости.</p>
+    <p>В промпте имя шрифта работает как описание характера: Gemini не подставляет файл шрифта, а рисует буквы. Поэтому к названию всегда добавляйте, что русские буквы должны быть в том же характере, что латинские.</p>
+    
+    <p><strong>Название серии или цитата в кавычках</strong> («НАНОСИМ ТОНАЛЬНИК ЛОЖКОЙ») — тем же шрифтом, но наклонным и в кавычках-лапках. Узнаваемый приём канала.</p>
+    
+    <p><strong>Подзаголовок</strong> нужен не всегда — только когда заголовок обещает результат, а строка ниже объясняет, за счёт чего он достигается («7 правил стойкости в жару», «как носить цветной лайнер днём»). Если заголовок и так всё сказал, подзаголовок не ставится. 3–6 слов, обычный регистр, без точки в конце.</p>
+    
+    <p>Оформление подзаголовка: легче и уже заголовка (Regular/Medium), примерно в 2 раза меньше, без плашки-подложки. Цвет — тёмный оттенок из выбранной пары (#7A1030, #0E7C86, #111111, #2E7D32), <strong>не белый:</strong> белый с обводкой на пастельном фоне исчезает в размере превью.</p>
+
+    <div style="background: #fdf2f4; padding: 1.2rem; border-radius: 12px; margin: 2rem 0;">
+        <p style="margin:0; color: #7A1030; font-size: 0.95rem;">Если будете верстать обложку вручную, а не в Gemini: у Bowlby One SC, Lilita One, Paytone One, Cooper Black и Luckiest Guy <strong>нет кириллицы</strong> в шрифтовых файлах. Для ручной вёрстки на русском берите Nunito ExtraBold, Baloo 2 Bold или Montserrat Black.</p>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ПРОМПТ-ШАБЛОН -->
+    <!-- ========================================== -->
+    <div class="section-header">4 · Промпт-шаблон</div>
+    <p>Замените значения в квадратных скобках. Опциональные блоки ниже добавляйте отдельными абзацами.</p>
+    <div style="background: #f7f7f7; padding: 1rem; border-radius: 12px; margin-bottom: 2rem;">
+        <p style="margin:0; font-size: 0.95rem;">Цвет можно задать самому — «пара №4 из списка выше» — или оставить выбор Gemini: «выбери пару из списка выше сам, по смыслу темы видео, и напиши, какую выбрал». Во втором случае модель остаётся внутри палитры, а вы видите её решение и можете попросить другую пару одной репликой.</p>
+    </div>
+
+    <div class="prompt-block">
+        <button class="prompt-copy-btn">Скопировать</button>
+Создай YouTube-обложку 1280x720 из прикреплённого фото.
+
+ГЛАВНОЕ: сохрани человека с прикреплённого фото ПОЛНОСТЬЮ без изменений —
+лицо и его черты, форма лица, глаза, причёска и цвет волос, макияж,
+телосложение, поза, положение рук и жест, одежда, её цвет и фасон,
+украшения и аксессуары. Это должен быть тот же самый человек в том же виде.
+Не заменяй человека, не подменяй лицо, не «улучшай», не омолаживай,
+не меняй фигуру, не перерисовывай одежду и не добавляй новых деталей внешности.
+Аккуратно вырежи фигуру по грудь без фона, при необходимости
+подтяни только свет и цветовую температуру под фон обложки.
+
+КОМПОЗИЦИЯ: фигура [СЛЕВА / СПРАВА], крупным планом, во весь рост кадра
+по грудь. Текстовый блок — с противоположной стороны, в верхней половине кадра.
+
+ФОН: светлый — [голубое небо с облаками / розовое боке /
+тёплый персиково-кремовый градиент], под тему видео. Не тёмный.
+
+ПАЛИТРА: используй только эти пары плашек, не придумывай свои цвета.
+Выбери одну пару по смыслу темы видео:
+1. зелёный #2E7D32 + фуксия #E8215F — лайфхаки, позитивные подборки (текст белый)
+2. бордовый #7A1030 + зелёный #4C8C2E — «секреты», экспертные разборы (текст белый)
+3. чёрный #111111 + фуксия #E8215F — мифы, разоблачения, эмоции (текст белый)
+4. фуксия #E8215F + тил #0E7C86 — серийные выпуски #1, #2 (текст белый)
+5. чёрный #111111 + лайм #B4E600 — провокация, «раскрываю секреты» (на лайме текст ЧЁРНЫЙ)
+6. тил #0E7C86 одной плашкой — заголовок в 1–2 слова (текст белый)
+7. тил #0E7C86 + фуксия #E8215F — обзоры и сравнения (текст белый)
+8. бордовый #7A1030 + фуксия #E8215F — личные истории, вечерний макияж (текст белый)
+9. чёрный #111111 + тил #0E7C86 — инструкции и уроки (текст белый)
+10. бордовый #7A1030 + лайм #B4E600 — резкие мнения (на лайме текст ЧЁРНЫЙ)
+11. зелёный #2E7D32 + лайм #B4E600 — свежесть, летние темы, уход (на лайме текст ЧЁРНЫЙ)
+12. фуксия #E8215F + чёрный #111111 — итоги, подборки «лучшее» (текст белый)
+Не смешивай цвета из разных пар. Не ставь рядом фуксию с лаймом
+и тил с зелёным. На обложке один акцентный цвет.
+
+ТЕКСТ: [2 / 3] строки друг под другом на плашках.
+Стиль плашки: [флэт / флэт с белым контуром 8 пикселей / мазок кистью].
+Пара цветов: [ОДНО ИЗ ДВУХ:
+  «пара №[НОМЕР] из списка выше» — если цвет выбираю я;
+  «выбери пару из списка выше сам, по смыслу темы видео, и в ответе
+  напиши, какую пару выбрал» — если выбор за тобой].
+Верхняя строка — первый цвет пары, текст «[ЗАГОЛОВОК ЧАСТЬ 1]».
+Нижняя строка — второй цвет пары, текст «[ЗАГОЛОВОК ЧАСТЬ 2]», крупнее верхней.
+Текст заглавными буквами, цвет — как указано в паре.
+
+ШРИФТ ЗАГОЛОВКА: [ВЫБЕРИТЕ ОДИН ИЗ СПИСКА]
+  Bowlby One SC — очень жирный, плотные буквы, максимально близко к
+    большинству обложек канала, отлично держит YouTube-превью (основной выбор)
+  Grobold — толстый, плотный, минимальные просветы, стиль вирусных превью
+  Lilita One — мягче Bowlby, скруглённые углы, очень читаемый, частый
+    шрифт beauty-обложек
+  Paytone One — компактный, как верхние строки в референсах канала,
+    читается даже в маленьком размере
+  Fredoka Bold — современный округлый, менее агрессивный, женская тематика
+  Genty Bold — более дорогая и современная стилистика, сочный и массивный
+  Cooper Black — та же толщина, но ретро-характер; только для отдельных слов
+  Luckiest Guy — игровой, эмоциональный; менее универсален
+РАЗМЕРЫ ТЕКСТА (кадр 1280x720, значения — высота заглавной буквы):
+  верхняя строка заголовка — 55–70 пикселей
+  нижняя строка заголовка — 75–95 пикселей, но не больше 100
+  подзаголовок — 26–34 пикселей, ровно в 2,5–3 раза меньше нижней строки
+Весь текстовый блок вместе с плашками занимает 45–60% ширины кадра
+и не выше 50% высоты кадра. Ширина следует из длины слова:
+слово из 8 букв при высоте 85 пикселей даёт строку около 720 пикселей.
+Если строка не влезает в 60% ширины — уменьши высоту букв
+или разбей заголовок на две строки, но НЕ сжимай буквы по горизонтали.
+Буквы не растягивать по вертикали:
+пропорции знаков нормальные, высота заглавной буквы примерно равна
+её ширине, строки не «вытянутые». Межстрочное расстояние плотное,
+но строки не слипаются.
+
+Набери текст именно в характере выбранного шрифта: заглавные,
+буквы плотно прижаты друг к другу, плотный трекинг, толстые штрихи.
+Русские буквы должны быть нарисованы в том же характере, что и латинские.
+Текст воспроизведи ПОБУКВЕННО ТОЧНО, на русском языке,
+без опечаток, без лишних слов и без искажённых букв.
+Плашки горизонтальные, допустим лёгкий наклон до 3 градусов.
+
+ПОДЗАГОЛОВОК (если не нужен — удалите этот блок целиком):
+под нижней плашкой ещё одна короткая строка без подложки,
+примерно в 2 раза меньше заголовка, обычным регистром, шрифт Nunito Bold.
+Цвет — тёмный цвет из выбранной пары (#7A1030, #0E7C86, #111111
+или #2E7D32), НЕ белый: фон светлый, белый текст на нём не читается.
+Текст подзаголовка: «[ПОДЗАГОЛОВОК]».
+Он уточняет обещание заголовка, 3–6 слов, без точки в конце.
+
+ДЕКОР: 2–4 элемента по теме видео вокруг фигуры —
+иллюстрации косметики (кисти, палетки, помада), лёгкие блики,
+лепестки или нарисованные от руки сердечки и стрелочки.
+Не перегружать, не закрывать лицо и текст.
+
+ТЕХНИЧЕСКОЕ: правый нижний угол оставь свободным (там таймкод).
+Ничего важного в нижние 60 пикселей.
+
+СТИЛЬ: живой, тёплый, «вкусный», кликабельный, с ощущением ручной работы,
+а не сухого корпоративного дизайна.
+    </div>
+
+    <!-- ОПЦИОНАЛЬНЫЕ БЛОКИ -->
+    <div class="section-header">Опциональные блоки</div>
+    <div class="prompt-block" style="background: #2b2b2b; margin-bottom: 1rem;">
+        БЕЙДЖ: в верхнем [левом/правом] углу небольшой скруглённый
+        прямоугольник цвета [ЦВЕТ] с текстом «#[НОМЕР]» белым капсом.
+    </div>
+    <div class="prompt-block" style="background: #2b2b2b;">
+        СЕРИЯ: строку «[ТЕКСТ В КАВЫЧКАХ]» набери тем же шрифтом,
+        но НАКЛОННЫМ (италик) и в кавычках-лапках.
+    </div>
+
+    <!-- ЧЕК-ЛИСТ -->
+    <div class="section-header">6 · Чек-лист перед публикацией</div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch1">
+        <label for="ch1">Человек — вы: лицо, поза, руки, одежда и украшения как на исходном фото</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch2">
+        <label for="ch2">Текст без опечаток, читается в уменьшенном виде</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch3">
+        <label for="ch3">Не более 5 слов на плашке</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch4">
+        <label for="ch4">Один акцентный цвет</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch5">
+        <label for="ch5">Лицо не перекрыто текстом</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch6">
+        <label for="ch6">Правый нижний угол свободен под таймкод</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="ch7">
+        <label for="ch7">Стиль плашки совпадает с последними 3–5 обложками канала</label>
+    </div>
+
+</div>
+</body>
+</html>
