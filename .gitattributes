@@ -1,0 +1,19 @@
+# Нормализуем переводы строк: в репозитории всегда LF, в рабочей копии — как в ОС.
+# Без этого Windows-клиенты создают CRLF-диффы на файлах, которые не менялись.
+* text=auto eol=lf
+
+# Бинарные файлы не трогаем
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.avif  binary
+*.ico   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.mp4   binary
+*.webm  binary

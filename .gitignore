@@ -1,0 +1,65 @@
+# --- Секреты (репозиторий публичный: ничего из этого не коммитим) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# --- Зависимости ---
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/install-state.gz
+
+# --- Сборка и кэши ---
+dist/
+build/
+out/
+.next/
+.nuxt/
+.astro/
+.svelte-kit/
+.vite/
+.cache/
+.parcel-cache/
+.turbo/
+*.tsbuildinfo
+
+# --- Логи ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Тесты и отчёты ---
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# --- Деплой ---
+.vercel/
+.netlify/
+
+# --- ОС ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# --- Редакторы ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*~
+
+# --- Claude Code (локальные разрешения — у каждой машины свои) ---
+.claude/settings.local.json
