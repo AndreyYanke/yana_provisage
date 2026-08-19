@@ -1,0 +1,37 @@
+name: Версия styles.css
+
+# styles.css отдаётся с immutable-кэшем на год, поэтому единственное, что
+# заставляет браузер забрать новые стили, — смена номера в адресе
+# styles.css?v=N. Забыть его поднять значит показать вернувшимся посетителям
+# новую разметку со старым CSS. Автоматической подстановки хэша нет, пока нет
+# шага сборки, поэтому здесь стоит проверка: она не чинит, но не даёт забыть.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Полная история: скрипту нужно достать index.html с базовой ревизии
+          fetch-depth: 0
+
+      - name: Определить базовую ревизию
+        id: base
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ref=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event.before }}" ] \
+            && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            echo "ref=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+          else
+            # первый пуш в ветку — сравнивать не с чем, скрипт это переживёт
+            echo "ref=HEAD~1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Проверить версию styles.css
+        run: node tools/check-css-version.mjs "${{ steps.base.outputs.ref }}"
