@@ -73,15 +73,24 @@
   [метро]           → #hero · #how (шаг 03) · #studio · подвал
   [адрес студии]    → #studio · подвал · JSON-LD
   телефон           → #studio · подвал · JSON-LD
-  t.me/USERNAME     → 12 ссылок по всей странице, у каждой свой текст
+  t.me/USERNAME     → 13 кликабельных ссылок, у каждой свой предзаполненный текст
+                      (в самом файле строка встречается 15 раз — две в комментариях)
 
   ── КОГДА ЭТОТ МАНИФЕСТ ПОРА ЗАМЕНИТЬ СБОРКОЙ ────────────────────────────
   Не из-за цен — их всего восемь и список закрывает риск. А из-за портфолио:
-  сейчас 18 карточек свёрстаны руками, каждая своим куском разметки. На
-  сорока карточках ручная вёрстка перестаёт окупаться — тогда контент
-  переезжает в content/*.json и собирается шаблоном на деплое. На выдачу
-  поисковику это не влияет никак: наружу в обоих случаях уходит один и тот
-  же статический HTML. Решение записано как обратимое в brief.md §12.
+  сейчас 63 карточки свёрстаны руками, каждая своим куском разметки, и это
+  ещё заглушки. Порог пройден — при первой же партии реальных фотографий
+  контент переезжает в content/*.json и собирается шаблоном на деплое.
+  На выдачу поисковику это не влияет никак: наружу в обоих случаях уходит
+  один и тот же статический HTML. Решение записано как обратимое,
+  brief.md §12.
+
+  ── ПОРТФОЛИО ────────────────────────────────────────────────────────────
+  Четыре категории: Образы · Причёски · Актрисы · Съёмки.
+  Карточки сверх первой порции лежат в разметке с классом is-hidden —
+  это НЕ мусор и не черновик, их открывает кнопка «Показать ещё».
+  Шаг открытия задан атрибутом data-step у кнопки: 6 в сетках, 3 в съёмках.
+  Добавляя работу: класс is-hidden ставить, если она не в первой шестёрке.
 ═══════════════════════════════════════════════════════════════════════════
 -->
 
@@ -379,22 +388,56 @@ ul{margin:0;padding:0;list-style:none}
 /* Инпуты стоят перед .tabs__bar, поэтому фокус ловится общим братом, а не «+» */
 #cat-1:focus-visible ~ .tabs__bar label[for="cat-1"],
 #cat-2:focus-visible ~ .tabs__bar label[for="cat-2"],
-#cat-3:focus-visible ~ .tabs__bar label[for="cat-3"]{outline:2px solid var(--accent);outline-offset:4px}
+#cat-3:focus-visible ~ .tabs__bar label[for="cat-3"],
+#cat-4:focus-visible ~ .tabs__bar label[for="cat-4"]{outline:2px solid var(--accent);outline-offset:4px}
 .tabs__panel{display:none;padding-top:clamp(2rem,4vw,3rem)}
 #cat-1:checked ~ .tabs__bar label[for="cat-1"],
 #cat-2:checked ~ .tabs__bar label[for="cat-2"],
-#cat-3:checked ~ .tabs__bar label[for="cat-3"]{color:var(--ink)}
+#cat-3:checked ~ .tabs__bar label[for="cat-3"],
+#cat-4:checked ~ .tabs__bar label[for="cat-4"]{color:var(--ink)}
 #cat-1:checked ~ .tabs__bar label[for="cat-1"]::after,
 #cat-2:checked ~ .tabs__bar label[for="cat-2"]::after,
-#cat-3:checked ~ .tabs__bar label[for="cat-3"]::after{transform:scaleX(1)}
+#cat-3:checked ~ .tabs__bar label[for="cat-3"]::after,
+#cat-4:checked ~ .tabs__bar label[for="cat-4"]::after{transform:scaleX(1)}
 #cat-1:checked ~ #panel-1,
 #cat-2:checked ~ #panel-2,
-#cat-3:checked ~ #panel-3{display:block;animation:panelIn .55s var(--ease) both}
+#cat-3:checked ~ #panel-3,
+#cat-4:checked ~ #panel-4{display:block;animation:panelIn .55s var(--ease) both}
 @keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media (max-width:520px){
-  .tabs__bar{gap:0 1.25rem}
+@media (max-width:560px){
+  .tabs__bar{gap:0 1.125rem}
   .tabs__bar label{font-size:.9375rem}
 }
+@media (max-width:380px){
+  .tabs__bar{gap:0 .875rem}
+  .tabs__bar label{font-size:.875rem}
+}
+
+/* ── «ПОКАЗАТЬ ЕЩЁ» ────────────────────────────────────────────────────
+   Карточки сверх первой порции лежат в разметке, а не подгружаются
+   скриптом. Две причины: робот видит все работы — иначе смысл раздела
+   для поиска теряется; а loading="lazy" не даёт браузеру качать скрытые
+   изображения, поэтому вес первой загрузки от них не растёт */
+/* Специфичность здесь не украшение: одиночный .is-hidden (0,1,0) равен
+   .work{display:block} ниже по файлу, и при равенстве побеждает последнее
+   правило — карточки оставались видимыми. Селектор с родителем (0,2,0)
+   выигрывает независимо от порядка правил */
+.works > .is-hidden,
+.proj > .is-hidden{display:none}
+.more-row{margin-top:clamp(1.75rem,3.5vw,2.5rem)}
+/* Без JS кнопки нет: мёртвая кнопка хуже её отсутствия.
+   Видны первые шесть работ, страница остаётся полной для робота */
+.more{display:none}
+.js .more{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--f-body);font-size:.75rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:.9375rem 2rem;cursor:pointer;border-radius:0;
+  background:transparent;color:var(--ink);border:1px solid var(--line);
+  transition:border-color .35s var(--ease), color .35s var(--ease);
+}
+.js .more:hover{border-color:var(--accent);color:var(--accent)}
+.more[hidden]{display:none}
 
 .works{display:grid;gap:clamp(1rem,2.2vw,1.75rem);grid-template-columns:repeat(3,1fr)}
 @media (max-width:860px){ .works{grid-template-columns:repeat(2,1fr)} }
@@ -716,7 +759,7 @@ ul{margin:0;padding:0;list-style:none}
     <div class="sec__grid">
       <aside class="sec__aside">
         <p class="micro">Работы</p>
-        <p>Три направления, по которым обращаются чаще всего.</p>
+        <p>Четыре направления, по которым обращаются чаще всего.</p>
       </aside>
       <div>
         <h2 class="rv">Больше 250 работ, и ни одной <em>повторённой</em></h2>
@@ -726,75 +769,194 @@ ul{margin:0;padding:0;list-style:none}
           <input type="radio" name="cat" id="cat-1" checked>
           <input type="radio" name="cat" id="cat-2">
           <input type="radio" name="cat" id="cat-3">
+          <input type="radio" name="cat" id="cat-4">
 
           <div class="tabs__bar">
-            <label for="cat-1">Образы и причёски</label>
-            <label for="cat-2">Актрисы</label>
-            <label for="cat-3">Съёмки</label>
+            <label for="cat-1">Образы</label>
+            <label for="cat-2">Причёски</label>
+            <label for="cat-3">Актрисы</label>
+            <label for="cat-4">Съёмки</label>
           </div>
 
-          <!-- ── Категория 1 ────────────────────────────────────────────── -->
+          <!-- ── Образы ─────────────────────────────────────────────── -->
           <div class="tabs__panel" id="panel-1">
-            <div class="works">
+            <div class="works" id="grid-1">
               <!-- ЗАМЕНИТЬ каждый .ph на <img src="…" alt="…" loading="lazy" decoding="async"> -->
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 1</span></div></div><figcaption>Вечерний образ, макияж и укладка</figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 2</span></div></div><figcaption>Макияж без макияжа, дневной свет</figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 3</span></div></div><figcaption>Локоны, вечерний выход</figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 4</span></div></div><figcaption>Графичная стрелка, мягкая растушёвка</figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 5</span></div></div><figcaption>Собранная причёска, тёплая палитра</figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 6</span></div></div><figcaption>Полный образ для фотосессии</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 1</span></div></div><figcaption>Вечерний образ, макияж и укладка</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 2</span></div></div><figcaption>Макияж без макияжа, дневной свет</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 3</span></div></div><figcaption>Графичная стрелка, мягкая растушёвка</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 4</span></div></div><figcaption>Тёплая палитра, естественная кожа</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 5</span></div></div><figcaption>Полный образ для фотосессии</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 6</span></div></div><figcaption>Вечерний выход, акцент на глаза</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 7</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 8</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 9</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 10</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 11</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 12</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 13</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 14</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 15</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 16</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 17</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 18</span></div></div><figcaption>[подпись работы]</figcaption></figure>
             </div>
+            <p class="more-row">
+              <button class="more" type="button" data-more="grid-1" data-step="6">Показать ещё</button>
+            </p>
             <p class="cta-row">
               <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Хочу записаться на образ. Дата: ____" target="_blank" rel="noopener">Написать про образ <span class="arw">→</span></a>
             </p>
           </div>
 
-          <!-- ── Категория 2 ────────────────────────────────────────────── -->
+          <!-- ── Причёски ─────────────────────────────────────────────── -->
           <div class="tabs__panel" id="panel-2">
-            <div class="works">
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 1</span></div></div><figcaption>[имя актрисы]<span class="cred">театральная постановка</span></figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 2</span></div></div><figcaption>[имя актрисы]<span class="cred">съёмка для проекта</span></figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 3</span></div></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка</span></figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 4</span></div></div><figcaption>[имя актрисы]<span class="cred">образ для сцены</span></figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 5</span></div></div><figcaption>[имя актрисы]<span class="cred">кино</span></figcaption></figure>
-              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 6</span></div></div><figcaption>[имя актрисы]<span class="cred">пресс-день</span></figcaption></figure>
+            <div class="works" id="grid-2">
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 1</span></div></div><figcaption>Мягкие локоны, вечерний выход</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 2</span></div></div><figcaption>Собранная причёска с открытой шеей</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 3</span></div></div><figcaption>Низкий пучок, гладкая линия</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 4</span></div></div><figcaption>Голливудская волна</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 5</span></div></div><figcaption>Объёмная укладка на средние волосы</figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 6</span></div></div><figcaption>Небрежная коса, дневной образ</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 7</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 8</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 9</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 10</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 11</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 12</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 13</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 14</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 15</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 16</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 17</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 18</span></div></div><figcaption>[подпись работы]</figcaption></figure>
             </div>
+            <p class="more-row">
+              <button class="more" type="button" data-more="grid-2" data-step="6">Показать ещё</button>
+            </p>
+            <p class="cta-row">
+              <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Хочу записаться на причёску. Дата: ____" target="_blank" rel="noopener">Написать про причёску <span class="arw">→</span></a>
+            </p>
+          </div>
+
+          <!-- ── Актрисы ─────────────────────────────────────────────── -->
+          <div class="tabs__panel" id="panel-3">
+            <div class="works" id="grid-3">
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 1</span></div></div><figcaption>[имя актрисы]<span class="cred">театральная постановка</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 2</span></div></div><figcaption>[имя актрисы]<span class="cred">съёмка для проекта</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 3</span></div></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 4</span></div></div><figcaption>[имя актрисы]<span class="cred">образ для сцены</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 5</span></div></div><figcaption>[имя актрисы]<span class="cred">кино</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 6</span></div></div><figcaption>[имя актрисы]<span class="cred">пресс-день</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 7</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 8</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 9</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 10</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 11</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 12</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 13</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 14</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 15</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 16</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 17</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 18</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+            </div>
+            <p class="more-row">
+              <button class="more" type="button" data-more="grid-3" data-step="6">Показать ещё</button>
+            </p>
             <p class="cta-row">
               <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует визажист на проект." target="_blank" rel="noopener">Написать про проект <span class="arw">→</span></a>
             </p>
           </div>
 
-          <!-- ── Категория 3: съёмки поданы проектами ───────────────────── -->
-          <div class="tabs__panel" id="panel-3">
-            <div class="proj">
-              <article class="proj__row">
-                <div class="ph"><span>Съёмка 1</span></div>
-                <div>
-                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                  <h3>[название проекта]</h3>
-                  <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                </div>
-              </article>
-              <article class="proj__row">
-                <div class="ph"><span>Съёмка 2</span></div>
-                <div>
-                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                  <h3>[название проекта]</h3>
-                  <p>[одна строка контекста]</p>
-                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                </div>
-              </article>
-              <article class="proj__row">
-                <div class="ph"><span>Съёмка 3</span></div>
-                <div>
-                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                  <h3>[название проекта]</h3>
-                  <p>[одна строка контекста]</p>
-                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                </div>
-              </article>
+          <!-- ── Съёмки ─────────────────────────────────────────────── -->
+          <div class="tabs__panel" id="panel-4">
+            <div class="proj" id="grid-4">
+                <article class="proj__row">
+                  <div class="ph"><span>Съёмка 1</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row">
+                  <div class="ph"><span>Съёмка 2</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row">
+                  <div class="ph"><span>Съёмка 3</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 4</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 5</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 6</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 7</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 8</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
+                <article class="proj__row is-hidden">
+                  <div class="ph"><span>Съёмка 9</span></div>
+                  <div>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <h3>[название проекта]</h3>
+                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  </div>
+                </article>
             </div>
+            <p class="more-row">
+              <button class="more" type="button" data-more="grid-4" data-step="3">Показать ещё</button>
+            </p>
             <p class="cta-row">
               <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует визажист на съёмку." target="_blank" rel="noopener">Написать про съёмку <span class="arw">→</span></a>
             </p>
@@ -1183,7 +1345,22 @@ function reveal() {
   });
 }
 
-/* 2. Шапка переключает тему на границе тёмного первого экрана.
+/* 2. «Показать ещё»: открывает следующую порцию карточек в своей категории.
+   Счётчик у каждой сетки свой, поэтому переключение табов ничего не сбрасывает —
+   раскрытые «Образы» остаются раскрытыми, когда вернёшься из «Актрис» */
+document.querySelectorAll('.more').forEach(function (btn) {
+  var grid = document.getElementById(btn.getAttribute('data-more'));
+  var step = parseInt(btn.getAttribute('data-step'), 10) || 6;
+  if (!grid) { btn.hidden = true; return; }
+  btn.addEventListener('click', function () {
+    var rest = grid.querySelectorAll('.is-hidden');
+    for (var i = 0; i < step && i < rest.length; i++) rest[i].classList.remove('is-hidden');
+    if (grid.querySelectorAll('.is-hidden').length === 0) btn.hidden = true;
+  });
+  if (grid.querySelectorAll('.is-hidden').length === 0) btn.hidden = true;
+});
+
+/* 3. Шапка переключает тему на границе тёмного первого экрана.
    Имена hdr/fab, а не top/float: `var top` на верхнем уровне бьётся с
    window.top — оно только для чтения, присваивание молча не срабатывает */
 var hdr = document.getElementById('top');
