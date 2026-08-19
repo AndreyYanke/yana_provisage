@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--
+═══════════════════════════════════════════════════════════════════════════
+  ЧТО ЗАМЕНИТЬ ПЕРЕД ЗАПУСКОМ
+  Все подстановки помечены в тексте квадратными скобками: [ ... ]
+
+  1. TELEGRAM      найти и заменить  t.me/USERNAME  → реальный аккаунт Яны
+  2. ТЕЛЕФОН       найти и заменить  +7 000 000-00-00  и  tel:+70000000000
+  3. АДРЕС/МЕТРО   найти  [адрес студии]  и  [метро]
+  4. ИМЯ САЙТА     найти  ЯНА  в шапке и подвале + <title> + JSON-LD внизу
+  5. ССЫЛКИ СОЦСЕТЕЙ  в подвале, атрибуты href="#" помечены комментарием
+  6. ФОТО          блоки <div class="ph"> — каждый заменяется на
+                   <img src="фото.webp" alt="описание" loading="lazy" decoding="async">
+                   Первый экран: см. .hero__photo — там фон-заглушка,
+                   вместо неё ставится background-image с реальным кадром
+  7. ОТЗЫВЫ        блок «Отзывы» — сейчас каркас без выдуманных цитат
+  8. FAQ           три ответа помечены [черновик] — нужны слова Яны
+
+  Кириллица в ссылках Telegram намеренно оставлена читаемой:
+  браузер кодирует её сам при переходе. Так текст можно править глазами.
+═══════════════════════════════════════════════════════════════════════════
+-->
+
+<title>Яна — визажист в Москве</title>
+<meta name="description" content="Визажист в Москве. Макияж, причёска и полный образ в студии и с выездом. Точные цены без «от»: косметика, подготовка кожи и ресницы входят в стоимость.">
+<meta property="og:title" content="Яна — визажист в Москве">
+<meta property="og:description" content="Макияж подстраивается под ваше лицо, а не заменяет его. Студия в Москве, выезд по городу.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────────────────────────────────
+   ТОКЕНЫ
+
+   Страница собрана из трёх источников по выбору заказчика:
+   · типографика и тон  — вариант C «Камерная»  (Playfair Display + Golos Text)
+   · первый экран       — вариант A «Разворот»  (тёмный тёплый, фото во всю ширину)
+   · остальная страница — вариант B «Полоса»    (почти белая тёплая бумага)
+
+   Акцент один — пыльная роза, но в двух светлотах: на почти белой бумаге
+   светлая роза даёт контраст 2.2:1 и не читается, поэтому для светлых
+   поверхностей взят тот же тон глубже.
+   ───────────────────────────────────────────────────────────────────────── */
+:root{
+  /* бумага основной части — из варианта B */
+  --paper:      #F4F2EE;
+  --paper-lift: #FBFAF8;
+  --paper-deep: #E9E5DE;
+  --line:       #D8D3CB;
+
+  /* чернила: тёплый тёмный, родственный первому экрану */
+  --ink:      #231D1B;
+  --ink-soft: #635853;
+
+  /* акцент — пыльная роза в двух светлотах */
+  --accent:      #9E5A50;   /* на светлом */
+  --accent-lift: #D9A79E;   /* на тёмном */
+
+  /* первый экран и подвал — из варианта A */
+  --dark:       #1A1210;
+  --cream:      #F3EBE2;
+  --cream-soft: rgba(243,235,226,.72);
+  --cream-dim:  rgba(243,235,226,.46);
+  --cream-line: rgba(243,235,226,.16);
+
+  --f-display:'Playfair Display', Georgia, 'Times New Roman', serif;
+  --f-body:'Golos Text', 'Helvetica Neue', Arial, sans-serif;
+
+  --gut:  clamp(1.25rem, 5vw, 4.5rem);
+  --wide: 1320px;
+  --sec:  clamp(4.5rem, 11vw, 9.5rem);
+  --head: 4.75rem;
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:1rem;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block}
+h1,h2,h3,h4{margin:0;font-weight:500;font-family:var(--f-display);line-height:1.05;letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Переход по якорю из меню не должен прятать заголовок под шапкой */
+[id]{scroll-margin-top:calc(var(--head) + 1rem)}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--ink);color:var(--paper);padding:.75rem 1.25rem;text-decoration:none;
+}
+.skip:focus{left:0}
+
+.wrap{max-width:var(--wide);margin:0 auto;padding-inline:var(--gut)}
+
+/* Служебный тип — капслок с разрядкой на Golos Text. Третьей гарнитуры нет
+   намеренно: каждый шрифтовой файл стоит миллисекунд, а обвал конверсии
+   приходится на первые две секунды (research §3.1) */
+.micro{
+  font-size:.6875rem;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:500;line-height:1.6;
+}
+
+/* ── ШАПКА: кремовая поверх тёмного героя, чернильная на бумаге ────────── */
+.top{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  color:var(--cream);
+  border-bottom:1px solid transparent;
+  transition:background .45s var(--ease), color .45s var(--ease), border-color .45s var(--ease);
+}
+/* Прозрачная шапка нужна только в покое, на первом кадре героя. Как только
+   контент поехал под неё — подложка обязательна, иначе имя наезжает на кнопку */
+.top.is-dark{
+  background:rgba(26,18,16,.74);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom-color:var(--cream-line);
+}
+.top.is-light{
+  color:var(--ink);
+  background:var(--paper);
+  background:color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom-color:var(--line);
+}
+.top__in{
+  max-width:var(--wide);margin:0 auto;
+  height:var(--head);padding-inline:var(--gut);
+  display:flex;align-items:center;gap:2rem;
+}
+/* Подстановка вместо логотипа: имя набрано текстом.
+   Знак встанет на это место без переверстки шапки (brief.md §11) */
+.mark{
+  font-family:var(--f-display);font-size:1.0625rem;font-weight:500;
+  letter-spacing:.34em;text-transform:uppercase;text-decoration:none;
+  margin-right:auto;white-space:nowrap;
+}
+.nav{display:flex;gap:1.75rem}
+.nav a{
+  text-decoration:none;font-size:.8125rem;letter-spacing:.04em;
+  opacity:.72;position:relative;padding-block:.25rem;
+  transition:opacity .3s var(--ease);
+}
+.nav a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.nav a:hover{opacity:1}
+.nav a:hover::after{transform:scaleX(1)}
+.top__tg{
+  text-decoration:none;border:1px solid currentColor;opacity:.85;
+  padding:.5rem 1.0625rem;white-space:nowrap;
+  transition:opacity .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+.top__tg:hover{opacity:1}
+.top.is-light .top__tg:hover{background:var(--ink);color:var(--paper)}
+@media (max-width:900px){ .nav{display:none} }
+
+/* ══ ПЕРВЫЙ ЭКРАН — вариант A: тёмный, фото во всю ширину ═══════════════ */
+.hero{
+  position:relative;min-height:100vh;min-height:100svh;
+  display:flex;flex-direction:column;
+  background:var(--dark);color:var(--cream);
+  isolation:isolate;
+}
+/* ЗАМЕНИТЬ: сюда ставится реальный кадр —
+   background-image: linear-gradient(...scrim...), url('фото.webp');
+   Градиент-затемнение снизу обязателен, иначе кремовый текст не читается */
+.hero__photo{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    linear-gradient(to top, rgba(26,18,16,.90) 0%, rgba(26,18,16,.52) 34%, rgba(26,18,16,.14) 72%, rgba(26,18,16,.30) 100%),
+    radial-gradient(92% 74% at 66% 28%, #A98874 0%, #6B5147 44%, #3B2A25 76%, #221816 100%);
+}
+.hero__note{
+  position:absolute;top:calc(var(--head) + .75rem);right:var(--gut);
+  font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cream-dim);
+}
+.hero__in{
+  flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  max-width:var(--wide);width:100%;margin:0 auto;
+  padding:calc(var(--head) + 2rem) var(--gut) clamp(2.5rem,6vw,4.5rem);
+}
+.hero h1{
+  font-size:clamp(2.875rem,9.4vw,7.5rem);
+  line-height:1.0;letter-spacing:-.03em;
+}
+/* overflow:hidden нужен для въезда строки снизу, но он же срезает выносные
+   элементы кириллицы — «у», «д», «з». Padding расширяет маску вниз,
+   отрицательный margin возвращает исходную высоту блока */
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.22em;margin-bottom:-.16em}
+.hero h1 .ln > span{display:block}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--accent-lift)}
+
+.hero__lead{
+  /* курсивный хвост «у» в «узнаете» съедает верхний отступ — берём с запасом */
+  margin-top:clamp(2.25rem,4vw,3.25rem);
+  max-width:31ch;color:var(--cream-soft);
+  font-size:clamp(1rem,1.7vw,1.1875rem);line-height:1.72;
+}
+.hero__row{
+  margin-top:clamp(2rem,4vw,2.75rem);
+  display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem 2rem;
+}
+.hero__geo{color:var(--cream-dim);letter-spacing:.16em}
+
+/* Строка брендов — шов между тёмной обложкой и светлым разворотом.
+   Названия набраны текстом, без фирменных логотипов (brief.md §7) */
+.hero__brands{
+  position:relative;border-top:1px solid var(--cream-line);
+  max-width:var(--wide);width:100%;margin:0 auto;
+  padding:1.25rem var(--gut);
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.6rem 1.75rem;
+  color:var(--cream-dim);
+}
+.hero__brands b{color:var(--accent-lift);font-weight:500}
+
+/* ── КНОПКИ ────────────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-family:var(--f-body);font-size:.75rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  padding:1.0625rem 2.125rem;
+  position:relative;overflow:hidden;
+  border:1px solid var(--accent);background:var(--accent);color:#fff;
+  transition:border-color .45s var(--ease);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--ink);
+  transform:translateY(101%);transition:transform .45s var(--ease);
+}
+.btn span{position:relative}
+.btn:hover{border-color:var(--ink)}
+.btn:hover::before{transform:translateY(0)}
+/* На тёмном первом экране кнопка светлее фона, а не темнее */
+.btn--onDark{border-color:var(--accent-lift);background:var(--accent-lift);color:#221816}
+.btn--onDark::before{background:var(--cream)}
+.btn--onDark:hover{border-color:var(--cream)}
+
+.link{
+  display:inline-block;text-decoration:none;color:var(--accent);
+  font-size:.875rem;font-weight:500;letter-spacing:.02em;
+  position:relative;padding-bottom:.25rem;
+}
+.link::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:currentColor;transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.link:hover::after{transform:scaleX(1)}
+.link .arw{display:inline-block;transition:transform .45s var(--ease)}
+.link:hover .arw{transform:translateX(5px)}
+
+/* ── СЕКЦИЯ: редакционная левая колонка-колонтитул ─────────────────────── */
+.sec{padding-block:var(--sec)}
+.sec + .sec{padding-top:0}
+.sec__grid{
+  display:grid;
+  grid-template-columns:minmax(140px,190px) minmax(0,1fr);
+  gap:clamp(1.75rem,4vw,4rem);
+}
+.sec__aside{position:sticky;top:calc(var(--head) + 1.5rem);align-self:start}
+.sec__aside .micro{color:var(--accent)}
+.sec__aside p{margin-top:.75rem;font-size:.8125rem;line-height:1.7;color:var(--ink-soft)}
+@media (max-width:860px){
+  .sec__grid{grid-template-columns:1fr;gap:1.25rem}
+  .sec__aside{position:static}
+  .sec__aside p{display:none}
+}
+.sec h2{font-size:clamp(2.125rem,5.2vw,3.875rem);line-height:1.08;max-width:17ch}
+.sec h2 em{font-style:italic;color:var(--accent)}
+.sec__intro{
+  margin-top:1.5rem;max-width:52ch;color:var(--ink-soft);
+  font-size:1.0625rem;line-height:1.78;
+}
+
+/* ── ПОРТФОЛИО: табы на :checked, без JS ───────────────────────────────── */
+.tabs{margin-top:clamp(2.5rem,5vw,3.75rem);position:relative}
+.tabs input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.tabs__bar{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:0 2.25rem;
+  border-bottom:1px solid var(--line);
+}
+.tabs__bar label{
+  cursor:pointer;color:var(--ink-soft);
+  font-family:var(--f-display);font-size:clamp(1rem,2.1vw,1.375rem);
+  position:relative;padding-bottom:1rem;
+  transition:color .35s var(--ease);
+}
+.tabs__bar label::after{
+  content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.tabs__bar label:hover{color:var(--ink)}
+/* Инпуты стоят перед .tabs__bar, поэтому фокус ловится общим братом, а не «+» */
+#cat-1:focus-visible ~ .tabs__bar label[for="cat-1"],
+#cat-2:focus-visible ~ .tabs__bar label[for="cat-2"],
+#cat-3:focus-visible ~ .tabs__bar label[for="cat-3"]{outline:2px solid var(--accent);outline-offset:4px}
+.tabs__panel{display:none;padding-top:clamp(2rem,4vw,3rem)}
+#cat-1:checked ~ .tabs__bar label[for="cat-1"],
+#cat-2:checked ~ .tabs__bar label[for="cat-2"],
+#cat-3:checked ~ .tabs__bar label[for="cat-3"]{color:var(--ink)}
+#cat-1:checked ~ .tabs__bar label[for="cat-1"]::after,
+#cat-2:checked ~ .tabs__bar label[for="cat-2"]::after,
+#cat-3:checked ~ .tabs__bar label[for="cat-3"]::after{transform:scaleX(1)}
+#cat-1:checked ~ #panel-1,
+#cat-2:checked ~ #panel-2,
+#cat-3:checked ~ #panel-3{display:block;animation:panelIn .55s var(--ease) both}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width:520px){
+  .tabs__bar{gap:0 1.25rem}
+  .tabs__bar label{font-size:.9375rem}
+}
+
+.works{display:grid;gap:clamp(1rem,2.2vw,1.75rem);grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){ .works{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:520px){ .works{grid-template-columns:1fr} }
+.work{display:block;text-decoration:none;margin:0}
+.work__media{overflow:hidden;background:var(--paper-deep)}
+.work__media .ph{aspect-ratio:3/4;transition:transform .8s var(--ease)}
+.work:hover .work__media .ph{transform:scale(1.035)}
+.work figcaption{margin-top:.875rem;font-size:.875rem;line-height:1.55}
+.work .cred{display:block;margin-top:.3rem;color:var(--ink-soft);font-size:.75rem;letter-spacing:.04em}
+
+/* Съёмки поданы проектами, а не папкой фото (приём EvaGher, research §1.5) */
+.proj{display:grid;gap:clamp(1.5rem,3vw,2.5rem)}
+.proj__row{
+  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(1.25rem,3vw,2.5rem);align-items:center;
+  padding-bottom:clamp(1.5rem,3vw,2.5rem);border-bottom:1px solid var(--line);
+}
+.proj__row:last-child{border-bottom:0;padding-bottom:0}
+.proj__row .ph{aspect-ratio:4/3}
+.proj__meta{display:flex;gap:1.25rem;color:var(--accent)}
+.proj__row h3{margin-top:.75rem;font-size:clamp(1.5rem,3vw,2.25rem)}
+.proj__row p{margin-top:.75rem;color:var(--ink-soft);max-width:46ch;font-size:.9375rem;line-height:1.72}
+@media (max-width:720px){ .proj__row{grid-template-columns:1fr} }
+
+.cta-row{margin-top:clamp(2rem,4vw,3rem)}
+
+/* ── ПРАЙС: сигнатурный блок страницы ──────────────────────────────────
+   Цены набраны антиквой в заголовочном кегле. Причина не декоративная:
+   8 000 ₽ — нижняя граница московского коридора (research §2.6), и цифра
+   должна читаться как уверенность, а не как уровень мастера (brief §8) */
+.price{margin-top:clamp(2.5rem,5vw,3.75rem);border-top:1px solid var(--ink)}
+.price__row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:.5rem clamp(1.5rem,4vw,3rem);align-items:baseline;
+  padding-block:clamp(1.5rem,3vw,2.125rem);
+  border-bottom:1px solid var(--line);
+}
+.price__name{font-family:var(--f-display);font-size:clamp(1.375rem,3.2vw,2.125rem);line-height:1.16}
+.price__what{
+  grid-column:1;margin-top:.5rem;max-width:44ch;
+  color:var(--ink-soft);font-size:.9375rem;line-height:1.7;
+}
+.price__val{
+  font-family:var(--f-display);font-size:clamp(1.75rem,4.4vw,3.125rem);
+  line-height:1;white-space:nowrap;letter-spacing:-.02em;
+  grid-column:2;grid-row:1;
+}
+/* На узком экране цена уходит под название, а не сжимает его в столбик */
+@media (max-width:560px){
+  .price__row{grid-template-columns:1fr}
+  .price__val{grid-column:1;grid-row:auto;order:2;color:var(--accent)}
+  .price__what{order:3;margin-top:.75rem}
+  .price__add{order:4}
+}
+/* Наценки — подстроками того же ряда: видно, что это добавка к цене
+   выше, а не отдельный скрытый платёж (research §2.7, п.4) */
+.price__add{
+  grid-column:1/-1;margin-top:1.125rem;
+  display:flex;flex-wrap:wrap;gap:.6rem 2rem;
+  padding-top:1.125rem;border-top:1px dashed var(--line);
+}
+.price__add div{display:flex;align-items:baseline;gap:.7rem;color:var(--ink-soft);font-size:.9375rem}
+.price__add b{
+  font-family:var(--f-display);font-weight:500;color:var(--accent);
+  font-size:1.125rem;white-space:nowrap;
+}
+
+/* «Всё включено» — обязательный сосед прайса (brief §8) */
+.included{
+  margin-top:clamp(2rem,4vw,3rem);padding:clamp(1.5rem,3.5vw,2.75rem);
+  background:var(--paper-lift);border-left:2px solid var(--accent);
+}
+.included h3{font-size:clamp(1.375rem,2.8vw,1.875rem);max-width:20ch}
+.included p{margin-top:1rem;color:var(--ink-soft);max-width:56ch;line-height:1.78}
+.included ul{
+  margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.6rem 1.75rem;font-size:.9375rem;
+}
+.included li::before{content:'—';color:var(--accent);margin-right:.55rem}
+
+/* Смена «по запросу» — с объяснением, не голое «цены по запросу»
+   (research §1.6, п.4: без объяснения так не делает никто из премиума) */
+.onreq{
+  margin-top:clamp(1.5rem,3vw,2rem);padding:clamp(1.5rem,3.5vw,2.75rem);
+  border:1px solid var(--line);
+}
+.onreq h3{font-size:clamp(1.25rem,2.6vw,1.75rem)}
+.onreq p{margin-top:1rem;color:var(--ink-soft);max-width:58ch;line-height:1.78}
+.onreq .link{margin-top:1.5rem}
+
+/* ── ОБУЧЕНИЕ: лестница форматов ───────────────────────────────────────── */
+.learn{margin-top:clamp(2.5rem,5vw,3.75rem);display:grid;gap:clamp(1rem,2.2vw,1.5rem);grid-template-columns:repeat(3,1fr)}
+@media (max-width:860px){ .learn{grid-template-columns:1fr} }
+.lcard{
+  display:flex;flex-direction:column;
+  padding:clamp(1.5rem,3vw,2.25rem);background:var(--paper-lift);
+  border-top:2px solid var(--line);
+  transition:border-color .45s var(--ease), transform .45s var(--ease);
+}
+.lcard:hover{border-top-color:var(--accent);transform:translateY(-4px)}
+.lcard .micro{color:var(--accent)}
+.lcard h3{margin-top:1rem;font-size:clamp(1.375rem,2.6vw,1.75rem);max-width:14ch}
+.lcard p{margin-top:.875rem;color:var(--ink-soft);font-size:.9375rem;line-height:1.72;flex:1}
+.lcard .lp{font-family:var(--f-display);font-size:clamp(1.75rem,3.4vw,2.375rem);margin-top:1.75rem;line-height:1}
+.lcard .link{margin-top:1.25rem;align-self:start}
+
+/* ── ОБО МНЕ ───────────────────────────────────────────────────────────── */
+.about__grid{
+  margin-top:clamp(2.5rem,5vw,3.5rem);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.72fr);
+  gap:clamp(2rem,4vw,3.5rem);align-items:start;
+}
+@media (max-width:860px){ .about__grid{grid-template-columns:1fr} }
+.about__text p{margin-top:1.5rem;max-width:56ch;line-height:1.85}
+.about__text p:first-child{margin-top:0}
+.about__text .big{
+  font-family:var(--f-display);font-size:clamp(1.4375rem,3vw,2rem);
+  line-height:1.32;max-width:23ch;
+}
+.about__figure .ph{aspect-ratio:4/5}
+.facts{
+  margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;
+  grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  border-top:1px solid var(--line);padding-top:clamp(1.5rem,3vw,2.25rem);
+}
+@media (max-width:640px){ .facts{grid-template-columns:1fr;gap:1.25rem} }
+.facts b{display:block;font-family:var(--f-display);font-weight:500;font-size:clamp(1.75rem,3.6vw,2.5rem);line-height:1}
+.facts span{display:block;margin-top:.5rem;color:var(--ink-soft);font-size:.875rem;line-height:1.6;max-width:26ch}
+
+/* ── КАК ЭТО ПРОИСХОДИТ ────────────────────────────────────────────────
+   Единственная секция с нумерацией: здесь порядок несёт смысл */
+.steps{margin-top:clamp(2.5rem,5vw,3.75rem);border-top:1px solid var(--line)}
+.step{
+  display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(1.25rem,3vw,2.5rem);align-items:start;
+  padding-block:clamp(1.5rem,3vw,2rem);border-bottom:1px solid var(--line);
+}
+.step__n{
+  font-family:var(--f-display);font-style:italic;color:var(--accent);
+  font-size:clamp(1.125rem,2.2vw,1.5rem);line-height:1.2;min-width:2.5ch;
+}
+.step h3{font-size:clamp(1.125rem,2.4vw,1.5rem);line-height:1.3}
+.step p{margin-top:.625rem;color:var(--ink-soft);max-width:56ch;font-size:.9375rem;line-height:1.75}
+
+/* ── ОТЗЫВЫ ────────────────────────────────────────────────────────────── */
+.revs{margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(1rem,2.2vw,1.5rem)}
+@media (max-width:760px){ .revs{grid-template-columns:1fr} }
+.rev{padding:clamp(1.5rem,3vw,2.25rem);background:var(--paper-lift);margin:0}
+.rev blockquote{margin:0;font-family:var(--f-display);font-size:clamp(1.125rem,2.2vw,1.4375rem);line-height:1.45}
+.rev figcaption{margin-top:1.25rem;color:var(--ink-soft);font-size:.8125rem;letter-spacing:.06em}
+.rev--todo{border:1px dashed var(--accent);background:transparent}
+.rev--todo blockquote{color:var(--ink-soft);font-style:italic}
+
+/* ── СТУДИЯ ────────────────────────────────────────────────────────────── */
+.studio__grid{
+  margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;
+  grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(2rem,4vw,3.5rem);align-items:start;
+}
+@media (max-width:860px){ .studio__grid{grid-template-columns:1fr} }
+.studio__text p{margin-top:1.25rem;color:var(--ink-soft);max-width:48ch;line-height:1.8}
+.studio__text p:first-child{margin-top:0;color:var(--ink)}
+.studio__addr{
+  margin-top:1.75rem;padding-top:1.75rem;border-top:1px solid var(--line);
+  display:grid;gap:1rem;
+}
+.studio__addr div span{display:block;color:var(--accent);margin-bottom:.3rem}
+.studio__addr a{text-decoration:none;border-bottom:1px solid var(--line);transition:border-color .3s var(--ease)}
+.studio__addr a:hover{border-color:var(--accent)}
+.studio__map .ph{aspect-ratio:16/11}
+
+/* ── FAQ ───────────────────────────────────────────────────────────────── */
+.faq{margin-top:clamp(2.5rem,5vw,3.5rem);border-top:1px solid var(--line);max-width:60rem}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  cursor:pointer;list-style:none;padding-block:clamp(1.125rem,2.4vw,1.5rem);
+  display:flex;gap:1.5rem;align-items:baseline;justify-content:space-between;
+  font-family:var(--f-display);font-size:clamp(1.0625rem,2.2vw,1.375rem);
+  line-height:1.38;transition:color .3s var(--ease);
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--accent)}
+.faq summary .sign{flex:none;width:1rem;height:1rem;position:relative;translate:0 -.15em}
+.faq summary .sign::before,
+.faq summary .sign::after{
+  content:'';position:absolute;left:0;top:50%;width:100%;height:1px;background:currentColor;
+  transition:transform .4s var(--ease);
+}
+.faq summary .sign::after{transform:rotate(90deg)}
+.faq details[open] summary .sign::after{transform:rotate(0)}
+.faq details[open] summary{color:var(--accent)}
+.faq__a{padding-bottom:1.5rem;max-width:58ch;color:var(--ink-soft);line-height:1.8}
+.faq__a p + p{margin-top:.875rem}
+.todo{color:var(--accent);font-size:.8125rem;letter-spacing:.06em}
+
+/* ── ПОДВАЛ: тем же тоном, что первый экран — тёмное начало, тёмный конец ─ */
+.foot{background:var(--dark);color:var(--cream);padding-block:clamp(3rem,7vw,5.5rem)}
+.foot__grid{display:grid;grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:clamp(2rem,4vw,3rem)}
+@media (max-width:860px){ .foot__grid{grid-template-columns:1fr 1fr} }
+@media (max-width:560px){ .foot__grid{grid-template-columns:1fr} }
+.foot .mark{display:inline-block;margin:0 0 1.25rem}
+.foot__claim{color:var(--cream-soft);max-width:26ch;font-size:.9375rem;line-height:1.7}
+.foot h4{
+  font-family:var(--f-body);font-size:.6875rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:500;color:var(--accent-lift);
+}
+.foot ul{margin-top:1.125rem;display:grid;gap:.7rem}
+.foot a{text-decoration:none;font-size:.9375rem;color:var(--cream-soft);transition:color .3s var(--ease)}
+.foot a:hover{color:var(--cream)}
+.foot__bottom{
+  margin-top:clamp(2.5rem,5vw,4rem);padding-top:1.5rem;
+  border-top:1px solid var(--cream-line);
+  display:flex;flex-wrap:wrap;gap:.75rem 2rem;justify-content:space-between;
+  color:var(--cream-dim);font-size:.75rem;letter-spacing:.05em;
+}
+
+/* ── СКВОЗНАЯ ПЛАВАЮЩАЯ КНОПКА ─────────────────────────────────────────── */
+.float{
+  position:fixed;right:clamp(1rem,3vw,2rem);bottom:clamp(1rem,3vw,2rem);z-index:70;
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.9rem 1.375rem;text-decoration:none;
+  background:var(--ink);color:var(--paper);
+  font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  box-shadow:0 12px 36px -16px rgba(35,29,27,.7);
+  opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .5s var(--ease), transform .5s var(--ease), background .35s var(--ease);
+}
+.float.is-on{opacity:1;transform:none;pointer-events:auto}
+.float:hover{background:var(--accent)}
+.float svg{flex:none}
+@media (max-width:520px){ .float{padding:.8rem 1.125rem;font-size:.6875rem} }
+
+/* ── ЗАГЛУШКИ ФОТО ─────────────────────────────────────────────────────── */
+.ph{
+  position:relative;width:100%;
+  background:linear-gradient(158deg,#E6DFD6,#CDC1B5 58%,#AC9C8D);
+  display:grid;place-items:center;
+}
+.ph span{
+  font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(35,29,27,.42);text-align:center;padding:1.25rem;line-height:1.7;
+}
+
+/* ── ДВИЖЕНИЕ ──────────────────────────────────────────────────────────
+   Первый экран — одна срежиссированная сцена на CSS (работает без JS).
+   Дальше по странице — один и тот же тихий приём, без разнобоя */
+@keyframes rise{from{transform:translateY(105%)}to{transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes scrim{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:none}}
+
+.hero__photo{animation:scrim 1.5s var(--ease) both}
+.hero h1 .ln > span{animation:rise 1s var(--ease) both}
+.hero h1 .ln:nth-child(1) > span{animation-delay:.28s}
+.hero h1 .ln:nth-child(2) > span{animation-delay:.38s}
+.hero__lead{animation:fade .9s var(--ease) .66s both}
+.hero__row{animation:fade .9s var(--ease) .8s both}
+.hero__brands{animation:fade .9s var(--ease) .96s both}
+.hero__note{animation:fade .9s var(--ease) 1.1s both}
+
+.js .rv{opacity:0;transform:translateY(12px)}
+.js .rv.is-in{opacity:1;transform:none;transition:opacity .8s var(--ease), transform .8s var(--ease)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .js .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+
+<a class="skip micro" href="#portfolio">К содержанию</a>
+
+<header class="top" id="top">
+  <div class="top__in">
+    <!-- ПОДСТАНОВКА: имя набрано текстом. Логотип встанет сюда без переверстки -->
+    <a class="mark" href="#hero">ЯНА</a>
+    <nav class="nav" aria-label="Разделы страницы">
+      <a href="#portfolio">Работы</a>
+      <a href="#price">Цены</a>
+      <a href="#learn">Обучение</a>
+      <a href="#about">Обо мне</a>
+      <a href="#studio">Студия</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <a class="top__tg micro" href="https://t.me/USERNAME?text=Здравствуйте! Пишу с сайта." target="_blank" rel="noopener">Telegram</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═══ ПЕРВЫЙ ЭКРАН ═══════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__photo"></div>
+    <p class="hero__note">Здесь фото работы</p>
+
+    <div class="hero__in">
+      <h1>
+        <span class="ln"><span>Вы себя</span></span>
+        <span class="ln"><span><em>узнаете</em></span></span>
+      </h1>
+      <p class="hero__lead">Макияж подстраивается под ваше лицо, а не заменяет его.</p>
+      <div class="hero__row">
+        <a class="btn btn--onDark" href="https://t.me/USERNAME?text=Здравствуйте! Хочу записаться на образ. Дата: ____" target="_blank" rel="noopener"><span>Узнать свободные даты</span></a>
+        <p class="hero__geo micro">Студия в Москве · [метро]</p>
+      </div>
+    </div>
+
+    <div class="hero__brands micro">
+      <b>Работы для</b>
+      <span>Сбер</span><span>Золотое Яблоко</span><span>Бронницкий Ювелир</span>
+      <span>Max Factor</span><span>Bourjois</span><span>Baden</span><span>Franui</span>
+    </div>
+  </section>
+
+  <!-- ═══ ПОРТФОЛИО ═════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="portfolio">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Работы</p>
+        <p>Три направления, по которым обращаются чаще всего.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Больше 250 работ, и ни одной <em>повторённой</em></h2>
+        <p class="sec__intro rv">Один и тот же приём на двух разных лицах выглядит по-разному. Поэтому здесь важнее не техника, а то, что человек в кадре остался собой.</p>
+
+        <div class="tabs rv">
+          <input type="radio" name="cat" id="cat-1" checked>
+          <input type="radio" name="cat" id="cat-2">
+          <input type="radio" name="cat" id="cat-3">
+
+          <div class="tabs__bar">
+            <label for="cat-1">Образы и причёски</label>
+            <label for="cat-2">Актрисы</label>
+            <label for="cat-3">Съёмки</label>
+          </div>
+
+          <!-- ── Категория 1 ────────────────────────────────────────────── -->
+          <div class="tabs__panel" id="panel-1">
+            <div class="works">
+              <!-- ЗАМЕНИТЬ каждый .ph на <img src="…" alt="…" loading="lazy" decoding="async"> -->
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 1</span></div></div><figcaption>Вечерний образ, макияж и укладка</figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 2</span></div></div><figcaption>Макияж без макияжа, дневной свет</figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 3</span></div></div><figcaption>Локоны, вечерний выход</figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 4</span></div></div><figcaption>Графичная стрелка, мягкая растушёвка</figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 5</span></div></div><figcaption>Собранная причёска, тёплая палитра</figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Образ 6</span></div></div><figcaption>Полный образ для фотосессии</figcaption></figure>
+            </div>
+            <p class="cta-row">
+              <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Хочу записаться на образ. Дата: ____" target="_blank" rel="noopener">Написать про образ <span class="arw">→</span></a>
+            </p>
+          </div>
+
+          <!-- ── Категория 2 ────────────────────────────────────────────── -->
+          <div class="tabs__panel" id="panel-2">
+            <div class="works">
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 1</span></div></div><figcaption>[имя актрисы]<span class="cred">театральная постановка</span></figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 2</span></div></div><figcaption>[имя актрисы]<span class="cred">съёмка для проекта</span></figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 3</span></div></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка</span></figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 4</span></div></div><figcaption>[имя актрисы]<span class="cred">образ для сцены</span></figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 5</span></div></div><figcaption>[имя актрисы]<span class="cred">кино</span></figcaption></figure>
+              <figure class="work"><div class="work__media"><div class="ph"><span>Актриса 6</span></div></div><figcaption>[имя актрисы]<span class="cred">пресс-день</span></figcaption></figure>
+            </div>
+            <p class="cta-row">
+              <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует визажист на проект." target="_blank" rel="noopener">Написать про проект <span class="arw">→</span></a>
+            </p>
+          </div>
+
+          <!-- ── Категория 3: съёмки поданы проектами ───────────────────── -->
+          <div class="tabs__panel" id="panel-3">
+            <div class="proj">
+              <article class="proj__row">
+                <div class="ph"><span>Съёмка 1</span></div>
+                <div>
+                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                  <h3>[название проекта]</h3>
+                  <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                </div>
+              </article>
+              <article class="proj__row">
+                <div class="ph"><span>Съёмка 2</span></div>
+                <div>
+                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                  <h3>[название проекта]</h3>
+                  <p>[одна строка контекста]</p>
+                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                </div>
+              </article>
+              <article class="proj__row">
+                <div class="ph"><span>Съёмка 3</span></div>
+                <div>
+                  <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                  <h3>[название проекта]</h3>
+                  <p>[одна строка контекста]</p>
+                  <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                </div>
+              </article>
+            </div>
+            <p class="cta-row">
+              <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует визажист на съёмку." target="_blank" rel="noopener">Написать про съёмку <span class="arw">→</span></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ЦЕНЫ ══════════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="price">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Цены</p>
+        <p>Точные суммы. Ни одной строки «от».</p>
+      </aside>
+      <div>
+        <h2 class="rv">Цена названа до того, как вы <em>напишете</em></h2>
+        <p class="sec__intro rv">Считать в переписке нечего: суммы окончательные, доплаты перечислены отдельными строками.</p>
+
+        <div class="price rv">
+          <div class="price__row">
+            <p class="price__name">Макияж или причёска</p>
+            <p class="price__val">6 000 ₽</p>
+            <p class="price__what">В студии. Что-то одно на выбор — макияж либо укладка. От 30 минут, зависит от сложности.</p>
+          </div>
+
+          <div class="price__row">
+            <p class="price__name">Полный образ</p>
+            <p class="price__val">8 000 ₽</p>
+            <p class="price__what">В студии. Макияж и причёска вместе. От часа, зависит от сложности.</p>
+          </div>
+
+          <div class="price__row">
+            <p class="price__name">Сопровождение</p>
+            <p class="price__val">2 000 ₽/час</p>
+            <p class="price__what">Почасово на событии или на съёмке: правки образа, смена макияжа, помощь в течение дня.</p>
+            <div class="price__add">
+              <div><b>+4 000 ₽</b><span>выезд в пределах МКАД</span></div>
+              <div><b>+2 000 ₽</b><span>начало работы до 10:00</span></div>
+              <div><b>по счётчику</b><span>за МКАД оплачивается дополнительно</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="included rv">
+          <h3>Всё включено</h3>
+          <p>Профессиональная косметика, подготовка кожи и накладные ресницы уже в цене. В день события к сумме не добавляется ничего, кроме доплат из таблицы выше.</p>
+          <ul>
+            <li>своя косметика</li>
+            <li>подготовка кожи</li>
+            <li>накладные ресницы</li>
+          </ul>
+          <p style="margin-top:1.25rem">Коррекцию бровей не делаю — этой услуги в списке нет.</p>
+        </div>
+
+        <div class="onreq rv">
+          <h3>Съёмочная смена — ставка по брифу</h3>
+          <p>Фиксированной цифры за смену здесь нет, и вот почему: ставка складывается из количества образов, длительности смены, переодеваний и выезда. Одна и та же цифра для рекламного дня и для короткой предметной съёмки была бы неправдой.</p>
+          <p style="margin-top:.875rem">Напишите, что за проект — назову цену в тот же день.</p>
+          <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Нужен визажист на смену. Проект: ____" target="_blank" rel="noopener">Прислать бриф <span class="arw">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ОБУЧЕНИЕ ══════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="learn">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Обучение</p>
+        <p>Три формата, от получаса в мессенджере до дня в студии.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Научиться делать это <em>самой</em></h2>
+        <p class="sec__intro rv">Уроки индивидуальные и только в студии — программа собирается под ваше лицо и вашу косметичку, а не под общий конспект. Начать можно с консультации: это самый дешёвый способ понять, нужен ли вам урок.</p>
+
+        <div class="learn rv">
+          <article class="lcard">
+            <p class="micro">Первая ступень</p>
+            <h3>Онлайн-консультация</h3>
+            <p>В мессенджере — текстом, голосом или видео. До 30 минут на конкретный вопрос: что не получается, что купить, что заменить.</p>
+            <p class="lp">2 000 ₽</p>
+            <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует онлайн-консультация." target="_blank" rel="noopener">Записаться <span class="arw">→</span></a>
+          </article>
+
+          <article class="lcard">
+            <p class="micro">Урок в студии</p>
+            <h3>Макияж для себя</h3>
+            <p>Индивидуально. Разбираем ежедневный макияж под ваш запрос: что подходит именно этому лицу и как повторить это утром за отведённое время.</p>
+            <p class="lp">10 000 ₽</p>
+            <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует урок «Макияж для себя»." target="_blank" rel="noopener">Записаться <span class="arw">→</span></a>
+          </article>
+
+          <article class="lcard">
+            <p class="micro">Урок в студии</p>
+            <h3>Идеальные локоны</h3>
+            <p>Индивидуально. Стойкая укладка своими руками: подготовка волос, инструмент, разбор ошибок, из-за которых локоны распадаются к вечеру.</p>
+            <p class="lp">10 000 ₽</p>
+            <a class="link" href="https://t.me/USERNAME?text=Здравствуйте! Интересует урок «Идеальные локоны»." target="_blank" rel="noopener">Записаться <span class="arw">→</span></a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ОБО МНЕ ═══════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="about">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Обо мне</p>
+        <p>Почему получается именно так.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Я вижу лицо как <em>художник</em></h2>
+
+        <div class="about__grid">
+          <div class="about__text rv">
+            <p class="big">У меня художественное образование. Оттуда графичные формы, чистые растушёвки и умение сочетать оттенки — а не с курсов выходного дня.</p>
+            <p>Я Яна. Работаю с частными клиентками, с актрисами театра и кино, на съёмках для брендов и маркетплейсов. Больше 250 работ, и каждый раз это заново: один и тот же приём на двух разных лицах выглядит по-разному, потому что анатомия разная.</p>
+            <p>Именно поэтому я не переношу образ с картинки. Сначала смотрю, что за лицо передо мной, и только потом решаю, где добавить, а где не трогать вовсе.</p>
+            <p>В кресле не нужно поддерживать разговор и не нужно заранее знать, чего вы хотите. Расскажу, что делаю и зачем, если вам интересно; помолчу, если нет. Час рядом с незнакомым человеком не должен быть неловким — это часть работы, а не бонус к ней.</p>
+          </div>
+
+          <figure class="about__figure rv" style="margin:0">
+            <!-- ЗАМЕНИТЬ: портрет Яны в студии -->
+            <div class="ph"><span>Портрет Яны<br>4:5</span></div>
+          </figure>
+        </div>
+
+        <div class="facts rv">
+          <div><b>250+</b><span>работ в портфолио</span></div>
+          <div><b>Кино и театр</b><span>образы для актрис на сцену и в кадр</span></div>
+          <div><b>7 брендов</b><span>среди них Сбер, Золотое Яблоко, Max Factor</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ КАК ЭТО ПРОИСХОДИТ ════════════════════════════════════════════ -->
+  <section class="sec wrap" id="how">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Порядок</p>
+        <p>Пять шагов от сообщения до дня события.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Как это происходит</h2>
+        <p class="sec__intro rv">Если вы зовёте визажиста впервые — вот весь путь целиком, чтобы не пришлось спрашивать.</p>
+
+        <div class="steps rv">
+          <article class="step">
+            <p class="step__n">01</p>
+            <div>
+              <h3>Пишете в Telegram</h3>
+              <p>Достаточно двух вещей: повод и дата. Всё остальное выясняем по ходу.</p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__n">02</p>
+            <div>
+              <h3>Отвечаю в тот же день</h3>
+              <p>Говорю, свободна ли дата, сколько займёт работа и сколько будет стоить с учётом выезда и времени начала.</p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__n">03</p>
+            <div>
+              <h3>Договариваемся о месте</h3>
+              <p>Студия у метро [метро] или выезд по адресу. Для выезда закладываем дорогу — время начала считаем от неё.</p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__n">04</p>
+            <div>
+              <h3>Готовимся заранее</h3>
+              <p>Перед встречей прошу пару референсов или фото наряда — этого хватает, чтобы прийти уже с решением, а не подбирать его в кресле. <span class="todo">[черновик — уточнить у Яны]</span></p>
+            </div>
+          </article>
+          <article class="step">
+            <p class="step__n">05</p>
+            <div>
+              <h3>День события</h3>
+              <p>Макияж или причёска — от 30 минут, полный образ — от часа. Косметика, подготовка кожи и ресницы уже со мной.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ОТЗЫВЫ ════════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="reviews">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Отзывы</p>
+        <p>Источник указан у каждого.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Что говорят после</h2>
+
+        <!--
+          ЗАПОЛНИТЬ РЕАЛЬНЫМИ ОТЗЫВАМИ.
+          Выдуманные цитаты сюда не поставлены намеренно: в персональном бренде
+          непроверяемый отзыв — прямой антипаттерн (research.md §3.4, п.3).
+          Формат: цитата + источник + ссылка на карточку Яндекс Карт.
+        -->
+        <div class="revs rv">
+          <figure class="rev rev--todo">
+            <blockquote>[отзыв с Яндекс Карт — вставить дословно]</blockquote>
+            <figcaption>Яндекс Карты · <a href="#" style="color:var(--accent)">ссылка на карточку</a></figcaption>
+          </figure>
+          <figure class="rev rev--todo">
+            <blockquote>[отзыв с Яндекс Карт — вставить дословно]</blockquote>
+            <figcaption>Яндекс Карты · <a href="#" style="color:var(--accent)">ссылка на карточку</a></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ СТУДИЯ ════════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="studio">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Студия</p>
+        <p>Москва. Выезд по городу и области.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Где мы встретимся</h2>
+
+        <div class="studio__grid">
+          <div class="studio__text rv">
+            <p>Работаю в своей студии — там свет, зеркало и вся косметика под рукой, и это всегда лучший результат за то же время.</p>
+            <p>Если приехать неудобно или сборы идут дома, выезжаю: в пределах МКАД доплата 4 000 ₽, за МКАД считаем по расстоянию. Начало работы до 10:00 — ещё 2 000 ₽, потому что выехать нужно затемно.</p>
+
+            <div class="studio__addr">
+              <div><span class="micro">Адрес</span>[адрес студии]</div>
+              <div><span class="micro">Метро</span>[метро]</div>
+              <div><span class="micro">Телефон</span><a href="tel:+70000000000">+7 000 000-00-00</a></div>
+              <div><span class="micro">Telegram</span><a href="https://t.me/USERNAME?text=Здравствуйте! Пишу с сайта." target="_blank" rel="noopener">@USERNAME</a></div>
+            </div>
+          </div>
+
+          <figure class="studio__map rv" style="margin:0">
+            <!-- ЗАМЕНИТЬ на карту или фото студии.
+                 Карта Яндекса вставляется через <iframe> с конструктора карт -->
+            <div class="ph"><span>Карта или фото студии<br>16:11</span></div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ВОПРОСЫ ═══════════════════════════════════════════════════════ -->
+  <section class="sec wrap" id="faq">
+    <div class="sec__grid">
+      <aside class="sec__aside">
+        <p class="micro">Вопросы</p>
+        <p>Чтобы не спрашивать в переписке.</p>
+      </aside>
+      <div>
+        <h2 class="rv">Частые вопросы</h2>
+
+        <div class="faq rv">
+          <details>
+            <summary>Как забронировать дату?<span class="sign"></span></summary>
+            <div class="faq__a"><p>Написать в Telegram и назвать дату. Отвечаю в тот же день: свободно или нет. Дата считается вашей после подтверждения в переписке.</p></div>
+          </details>
+
+          <details>
+            <summary>Что входит в стоимость?<span class="sign"></span></summary>
+            <div class="faq__a"><p>Профессиональная косметика, подготовка кожи и накладные ресницы. Отдельно за них платить не нужно — сумма из прайса окончательная. Дополнительно считаются только выезд и раннее начало.</p></div>
+          </details>
+
+          <details>
+            <summary>Сколько времени занимают сборы?<span class="sign"></span></summary>
+            <div class="faq__a"><p>Макияж или причёска — от 30 минут. Полный образ — от часа. Точное время зависит от сложности: графичный макияж и сложная укладка требуют больше.</p></div>
+          </details>
+
+          <details>
+            <summary>Вы работаете с выездом?<span class="sign"></span></summary>
+            <div class="faq__a">
+              <p>Да. В пределах МКАД — доплата 4 000 ₽ к стоимости услуги. За МКАД оплачивается дополнительно, считаем по расстоянию.</p>
+              <p>Если начать нужно раньше 10:00 — ещё 2 000 ₽.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Нужно ли что-то делать заранее?<span class="sign"></span></summary>
+            <div class="faq__a"><p class="todo">[черновик — нужен ответ Яны: чистая кожа, крем, линзы, что взять с собой]</p></div>
+          </details>
+
+          <details>
+            <summary>У меня чувствительная кожа и аллергия. Это проблема?<span class="sign"></span></summary>
+            <div class="faq__a"><p class="todo">[черновик — нужен ответ Яны: какие марки в косметичке, есть ли гипоаллергенные варианты, предупреждать ли заранее]</p></div>
+          </details>
+
+          <details>
+            <summary>Что если придётся отменить?<span class="sign"></span></summary>
+            <div class="faq__a"><p class="todo">[черновик — условия отмены в брифе не заданы. Это вопрос, который люди боятся задать вслух, но именно он часто останавливает запись]</p></div>
+          </details>
+
+          <details>
+            <summary>Делаете ли вы коррекцию бровей?<span class="sign"></span></summary>
+            <div class="faq__a"><p>Нет. Этой услуги у меня нет — брови оформляю только косметикой в рамках макияжа.</p></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ ПОДВАЛ: карта сайта ═════════════════════════════════════════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <span class="mark">ЯНА</span>
+        <p class="foot__claim">Визажист в Москве. Студия и выезд по городу.</p>
+      </div>
+
+      <div>
+        <h4>Разделы</h4>
+        <ul>
+          <li><a href="#portfolio">Работы</a></li>
+          <li><a href="#price">Цены</a></li>
+          <li><a href="#learn">Обучение</a></li>
+          <li><a href="#about">Обо мне</a></li>
+          <li><a href="#how">Как это происходит</a></li>
+          <li><a href="#studio">Студия</a></li>
+          <li><a href="#faq">Вопросы</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Связь</h4>
+        <ul>
+          <li><a href="https://t.me/USERNAME?text=Здравствуйте! Пишу с сайта." target="_blank" rel="noopener">Telegram — написать</a></li>
+          <li><a href="tel:+70000000000">+7 000 000-00-00</a></li>
+          <!-- ЗАМЕНИТЬ href у всех ссылок ниже -->
+          <li><a href="#">Telegram-канал</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">ВКонтакте</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Дзен</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot__bottom">
+      <p>[адрес студии] · [метро]</p>
+      <p>Самозанятая</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Сквозная кнопка: здесь нужна ясность канала, а не оффер (brief §10) -->
+<a class="float" id="float" href="https://t.me/USERNAME?text=Здравствуйте! Пишу с сайта." target="_blank" rel="noopener">
+  <svg width="15" height="13" viewBox="0 0 24 20" fill="none" aria-hidden="true">
+    <path d="M23.1 1.6 19.6 18c-.3 1.2-1 1.5-2 .9l-5.5-4-2.7 2.6c-.3.3-.6.6-1.2.6l.4-5.6L18.7 3c.4-.4-.1-.6-.7-.2L5.4 10.7.1 9c-1.2-.4-1.2-1.2.2-1.7L21.6.1c1-.4 1.8.2 1.5 1.5Z" fill="currentColor"/>
+  </svg>
+  Написать в Telegram
+</a>
+
+<script>
+/* Прогрессивное улучшение: без JS страница полностью читается,
+   на скролл реагирует только оформление */
+document.documentElement.classList.add('js');
+
+/* 1. Тихое появление секций при скролле — один приём на всю страницу.
+   Считаем позицию сами, а не через IntersectionObserver: при прыжке по
+   якорю блок проскакивает мимо экрана целиком, пересечение было нулевым
+   и осталось нулевым — коллбэк не вызывается, и блок остаётся невидимым
+   навсегда. Проверка «верх выше нижней кромки» ловит и въезд снизу,
+   и уже уехавшее вверх. */
+var pending = Array.prototype.slice.call(document.querySelectorAll('.rv'));
+function reveal() {
+  if (!pending.length) return;
+  var edge = window.innerHeight * 0.88;
+  pending = pending.filter(function (el) {
+    if (el.getBoundingClientRect().top < edge) { el.classList.add('is-in'); return false; }
+    return true;
+  });
+}
+
+/* 2. Шапка переключает тему на границе тёмного первого экрана.
+   Имена hdr/fab, а не top/float: `var top` на верхнем уровне бьётся с
+   window.top — оно только для чтения, присваивание молча не срабатывает */
+var hdr = document.getElementById('top');
+var hero = document.getElementById('hero');
+var fab = document.getElementById('float');
+var tick = false;
+function onScroll() {
+  var y = window.scrollY;
+  var past = y > hero.offsetHeight - hdr.offsetHeight;
+  hdr.classList.toggle('is-light', past);
+  hdr.classList.toggle('is-dark', !past && y > 8);
+  fab.classList.toggle('is-on', y > window.innerHeight * 0.6);
+  reveal();
+  tick = false;
+}
+window.addEventListener('scroll', function () {
+  if (!tick) { tick = true; window.requestAnimationFrame(onScroll); }
+}, { passive: true });
+window.addEventListener('resize', onScroll, { passive: true });
+onScroll();
+</script>
+
+<!--
+  SEO-разметка. ЗАПОЛНИТЬ перед запуском: имя, адрес, телефон, ссылки.
+  Пока значения-подстановки — в таком виде разметка поисковику не отдаётся.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "ЯНА",
+  "description": "Визажист в Москве. Макияж, причёска и полный образ в студии и с выездом.",
+  "priceRange": "6000-10000 RUB",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Москва",
+    "addressCountry": "RU",
+    "streetAddress": "[адрес студии]"
+  },
+  "telephone": "+7 000 000-00-00",
+  "areaServed": "Москва и Московская область"
+}
+</script>
+
+</body>
+</html>

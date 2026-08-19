@@ -63,3 +63,4 @@ $RECYCLE.BIN/
 
 # --- Claude Code (локальные разрешения — у каждой машины свои) ---
 .claude/settings.local.json
+.gstack/

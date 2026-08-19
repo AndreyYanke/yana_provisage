@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.sitebuilderreport.com)",
+      "WebFetch(domain:www.joyadenuga.com)",
+      "WebFetch(domain:www.promuah.ru)",
+      "WebFetch(domain:www.kristinagasperas.com)",
+      "WebFetch(domain:www.sallyduvall.com)"
+    ]
+  }
+}
