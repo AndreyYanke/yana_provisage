@@ -16,8 +16,8 @@
   5. ССЫЛКИ СОЦСЕТЕЙ  в подвале, атрибуты href="#" помечены комментарием
   6. ФОТО          блоки <div class="ph"> — каждый заменяется на
                    <img src="фото.webp" alt="описание" loading="lazy" decoding="async">
-                   Первый экран: см. .hero__photo — там фон-заглушка,
-                   вместо неё ставится background-image с реальным кадром
+                   Первый экран уже на реальных кадрах: три штуки в .hero__photo
+                   сменяются сами, механика — @keyframes heroCycle в styles.css
   7. ОТЗЫВЫ        блок «Отзывы» — сейчас каркас без выдуманных цитат
   8. FAQ           три ответа помечены [черновик] — нужны слова Яны
 
@@ -87,7 +87,7 @@
   brief.md §12.
 
   ── ПРАВИШЬ styles.css — ПОДНИМИ ?v= ─────────────────────────────────────
-  Ссылка в <head> выглядит так: <link rel="stylesheet" href="styles.css?v=5">
+  Ссылка в <head> выглядит так: <link rel="stylesheet" href="styles.css?v=6">
   Файл отдаётся с max-age=31536000, immutable (см. vercel.json), то есть
   вернувшийся посетитель НЕ перезапросит его, пока не сменится адрес.
   Забыть поднять номер — значит показать людям новую разметку со старыми
@@ -123,7 +123,7 @@
 <!-- ?v= обязателен: styles.css кэшируется на год как immutable, и без смены
      адреса вернувшийся посетитель получит новую разметку со старыми стилями.
      Правило дублировано в манифесте ниже и в README -->
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 </head>
 
 <body>
@@ -150,8 +150,14 @@
 
   <!-- ═══ ПЕРВЫЙ ЭКРАН ═══════════════════════════════════════════════════ -->
   <section class="hero" id="hero">
-    <div class="hero__photo"></div>
-    <p class="hero__note">Здесь фото работы</p>
+    <!-- Три кадра сменяются перекрёстным затуханием, механика в styles.css.
+         alt пустой намеренно: за кадрами стоит заголовок, они здесь фон,
+         а не содержание — иначе экранный диктор читал бы их по кругу -->
+    <div class="hero__photo">
+      <img src="photo/header/10.jpg" width="960" height="1280" alt="" fetchpriority="high" decoding="async">
+      <img src="photo/header/20.jpg" width="1920" height="2560" alt="" loading="lazy" decoding="async">
+      <img src="photo/header/30.jpg" width="960" height="1280" alt="" loading="lazy" decoding="async">
+    </div>
 
     <div class="hero__in">
       <h1>
@@ -756,6 +762,50 @@ window.addEventListener('scroll', function () {
 }, { passive: true });
 window.addEventListener('resize', onScroll, { passive: true });
 onScroll();
+
+/* 4. Кадры съёмки тянутся мышью.
+   Пальцем и пером рамка листается сама, а мышь так не умеет: колесо крутит
+   страницу, перетаскивание выделяет текст. Поэтому обработчик только для
+   мыши — на тач-устройствах он не мешает родному поведению.
+
+   scroll-snap на время перетаскивания выключается: иначе он тянет кадр
+   обратно к точке привязки на каждом движении. После отпускания
+   возвращается и сам доводит кадр до места. */
+document.querySelectorAll('.shoot__frame').forEach(function (frame) {
+  var dragging = false, startX = 0, startLeft = 0;
+
+  frame.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    dragging = true;
+    startX = e.clientX;
+    startLeft = frame.scrollLeft;
+    frame.style.scrollSnapType = 'none';
+    frame.classList.add('is-dragging');
+    /* Захват указателя нужен, чтобы перетаскивание продолжалось, когда курсор
+       ушёл за пределы рамки. Он же умеет не сработать — если указатель уже
+       отпущен, браузер бросает исключение, и без обёртки оно оборвало бы
+       обработчик на первом же движении */
+    try { frame.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+
+  frame.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    frame.scrollLeft = startLeft - (e.clientX - startX);
+  });
+
+  function release() {
+    if (!dragging) return;
+    dragging = false;
+    frame.style.scrollSnapType = '';
+    frame.classList.remove('is-dragging');
+  }
+  frame.addEventListener('pointerup', release);
+  frame.addEventListener('pointercancel', release);
+
+  /* Браузер по умолчанию таскает саму картинку как файл — это перебивает
+     перетаскивание рамки, поэтому отключаем */
+  frame.addEventListener('dragstart', function (e) { e.preventDefault(); });
+});
 </script>
 
 <!--
