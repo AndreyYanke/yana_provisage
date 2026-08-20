@@ -78,15 +78,16 @@
 
   ── КОГДА ЭТОТ МАНИФЕСТ ПОРА ЗАМЕНИТЬ СБОРКОЙ ────────────────────────────
   Не из-за цен — их всего восемь и список закрывает риск. А из-за портфолио:
-  сейчас 63 карточки свёрстаны руками, каждая своим куском разметки, и это
-  ещё заглушки. Порог пройден — при первой же партии реальных фотографий
-  контент переезжает в content/*.json и собирается шаблоном на деплое.
+  20 карточек и 16 кадров в баннерах съёмок свёрстаны руками, каждая своим
+  куском разметки, с путями к файлам и размерами в атрибутах. Условие
+  наступило — реальные фотографии пришли, контент пора переносить
+  в content/*.json и собирать шаблоном на деплое.
   На выдачу поисковику это не влияет никак: наружу в обоих случаях уходит
   один и тот же статический HTML. Решение записано как обратимое,
   brief.md §12.
 
   ── ПРАВИШЬ styles.css — ПОДНИМИ ?v= ─────────────────────────────────────
-  Ссылка в <head> выглядит так: <link rel="stylesheet" href="styles.css?v=2">
+  Ссылка в <head> выглядит так: <link rel="stylesheet" href="styles.css?v=5">
   Файл отдаётся с max-age=31536000, immutable (см. vercel.json), то есть
   вернувшийся посетитель НЕ перезапросит его, пока не сменится адрес.
   Забыть поднять номер — значит показать людям новую разметку со старыми
@@ -94,10 +95,14 @@
 
   ── ПОРТФОЛИО ────────────────────────────────────────────────────────────
   Четыре категории: Образы · Причёски · Актрисы · Съёмки.
-  Карточки сверх первой порции лежат в разметке с классом is-hidden —
-  это НЕ мусор и не черновик, их открывает кнопка «Показать ещё».
-  Шаг открытия задан атрибутом data-step у кнопки: 6 в сетках, 3 в съёмках.
-  Добавляя работу: класс is-hidden ставить, если она не в первой шестёрке.
+  Первые три — сетки карточек. «Съёмки» устроены иначе: карточка проекта,
+  а на месте одной фотографии баннер — рамка листается вбок скроллом
+  (overflow-x + scroll-snap, без JS), под ней кружочки по числу кадров.
+
+  Кнопки «Показать ещё» сейчас прячутся сами: карточек с классом is-hidden
+  в разметке не осталось, все работы видны сразу. Класс и скрипт на месте —
+  добавляя работы сверх первой шестёрки, ставьте is-hidden, и кнопка вернётся.
+  Шаг открытия задан атрибутом data-step у кнопки.
 ═══════════════════════════════════════════════════════════════════════════
 -->
 
@@ -118,7 +123,7 @@
 <!-- ?v= обязателен: styles.css кэшируется на год как immutable, и без смены
      адреса вернувшийся посетитель получит новую разметку со старыми стилями.
      Правило дублировано в манифесте ниже и в README -->
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 
 <body>
@@ -194,25 +199,13 @@
           <!-- ── Образы ─────────────────────────────────────────────── -->
           <div class="tabs__panel" id="panel-1">
             <div class="works" id="grid-1">
-              <!-- ЗАМЕНИТЬ каждый .ph на <img src="…" alt="…" loading="lazy" decoding="async"> -->
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 1</span></div></div><figcaption>Вечерний образ, макияж и укладка</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 2</span></div></div><figcaption>Макияж без макияжа, дневной свет</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 3</span></div></div><figcaption>Графичная стрелка, мягкая растушёвка</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 4</span></div></div><figcaption>Тёплая палитра, естественная кожа</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 5</span></div></div><figcaption>Полный образ для фотосессии</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Образы 6</span></div></div><figcaption>Вечерний выход, акцент на глаза</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 7</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 8</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 9</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 10</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 11</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 12</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 13</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 14</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 15</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 16</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 17</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Образы 18</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/10.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Вечерний макияж в тёплой гамме, ягодные губы и мягкая укладка с локонами"></div><figcaption>Вечерний образ, макияж и укладка</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/20.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Естественный макияж с персиковыми губами, волосы убраны с выпущенными прядями"></div><figcaption>Естественный макияж, собранные волосы</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/30.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Свадебный образ: сияющая кожа, светлые волосы голливудской волной и фата"></div><figcaption>Свадебный образ, голливудская волна и фата</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/40.webp" width="800" height="1057" loading="lazy" decoding="async" alt="Графичные стрелки в бирюзовом и сиреневом, волосы гладко убраны назад"></div><figcaption>Цветные графичные стрелки</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/50.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Дымчатый макияж глаз в серо-синей гамме, крупные локоны убраны от лица"></div><figcaption>Дымчатые глаза, локоны от лица</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/60.webp" width="800" height="1094" loading="lazy" decoding="async" alt="Нюдовый макияж с глянцевыми губами и гладкое каре до плеч"></div><figcaption>Нюдовый макияж, гладкое каре</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/makeup_and_hairstyles/70.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Красная помада, чёрная стрелка и крупные волны на рыжих волосах"></div><figcaption>Красные губы, рыжие волны</figcaption></figure>
             </div>
             <p class="more-row">
               <button class="more" type="button" data-more="grid-1" data-step="6">Показать ещё</button>
@@ -225,24 +218,13 @@
           <!-- ── Причёски ─────────────────────────────────────────────── -->
           <div class="tabs__panel" id="panel-2">
             <div class="works" id="grid-2">
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 1</span></div></div><figcaption>Мягкие локоны, вечерний выход</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 2</span></div></div><figcaption>Собранная причёска с открытой шеей</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 3</span></div></div><figcaption>Низкий пучок, гладкая линия</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 4</span></div></div><figcaption>Голливудская волна</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 5</span></div></div><figcaption>Объёмная укладка на средние волосы</figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Причёски 6</span></div></div><figcaption>Небрежная коса, дневной образ</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 7</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 8</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 9</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 10</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 11</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 12</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 13</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 14</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 15</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 16</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 17</span></div></div><figcaption>[подпись работы]</figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Причёски 18</span></div></div><figcaption>[подпись работы]</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/10.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Низкий пучок с выпущенными прядями и россыпью шпилек со стразами, вид со спины"></div><figcaption>Низкий пучок со шпильками-стразами</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/20.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Верхняя часть волос убрана назад, по длине мягкая волна"></div><figcaption>Полураспущенные волосы, мягкая волна</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/30.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Высокий небрежный пучок с выпущенными у лица прядями"></div><figcaption>Небрежный высокий пучок</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/40.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Гладко зачёсанный низкий пучок с валиком и шпильками со стразами"></div><figcaption>Гладкий низкий пучок</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/50.webp" width="800" height="982" loading="lazy" decoding="async" alt="Голливудская волна на медных волосах, вид со спины"></div><figcaption>Голливудская волна</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/60.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Низкий свадебный пучок на светлых волосах, под ним закреплена фата"></div><figcaption>Свадебный пучок под фату</figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/hairstyles/70.webp" width="800" height="1067" loading="lazy" decoding="async" alt="Низкий скрученный пучок с украшением-веточкой и выпущенной прядью"></div><figcaption>Низкий пучок с украшением</figcaption></figure>
             </div>
             <p class="more-row">
               <button class="more" type="button" data-more="grid-2" data-step="6">Показать ещё</button>
@@ -255,24 +237,12 @@
           <!-- ── Актрисы ─────────────────────────────────────────────── -->
           <div class="tabs__panel" id="panel-3">
             <div class="works" id="grid-3">
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 1</span></div></div><figcaption>[имя актрисы]<span class="cred">театральная постановка</span></figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 2</span></div></div><figcaption>[имя актрисы]<span class="cred">съёмка для проекта</span></figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 3</span></div></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка</span></figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 4</span></div></div><figcaption>[имя актрисы]<span class="cred">образ для сцены</span></figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 5</span></div></div><figcaption>[имя актрисы]<span class="cred">кино</span></figcaption></figure>
-                <figure class="work"><div class="work__media"><div class="ph"><span>Актрисы 6</span></div></div><figcaption>[имя актрисы]<span class="cred">пресс-день</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 7</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 8</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 9</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 10</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 11</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 12</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 13</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 14</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 15</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 16</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 17</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
-                <figure class="work is-hidden"><div class="work__media"><div class="ph"><span>Актрисы 18</span></div></div><figcaption>[имя актрисы]<span class="cred">[контекст работы]</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/10.webp" width="800" height="989" loading="lazy" decoding="async" alt="Портрет на натуре: светлые волосы, естественный макияж, чёрный свитер"></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка на натуре</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/20.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Съёмка в парке в полный рост, белое платье в пол"></div><figcaption>[имя актрисы]<span class="cred">съёмка на натуре</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/30.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Крупный портрет: светлые волосы, светлый макияж, белое пальто"></div><figcaption>[имя актрисы]<span class="cred">портретная съёмка</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/40.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Студийная съёмка в полный рост: рыжие волосы, светлый костюм"></div><figcaption>[имя актрисы]<span class="cred">студийная съёмка</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/50.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Студийный портрет с закрытыми глазами, акцент на ресницы и кожу"></div><figcaption>[имя актрисы]<span class="cred">студийная съёмка</span></figcaption></figure>
+                <figure class="work"><div class="work__media"><img src="photo/actresses/60.webp" width="800" height="1196" loading="lazy" decoding="async" alt="Студийный портрет: рыжие волосы, белая блуза, спокойный взгляд в кадр"></div><figcaption>[имя актрисы]<span class="cred">студийная съёмка</span></figcaption></figure>
             </div>
             <p class="more-row">
               <button class="more" type="button" data-more="grid-3" data-step="6">Показать ещё</button>
@@ -286,83 +256,76 @@
           <div class="tabs__panel" id="panel-4">
             <div class="proj" id="grid-4">
                 <article class="proj__row">
-                  <div class="ph"><span>Съёмка 1</span></div>
+                  <div class="shoot">
+                    <div class="shoot__frame" tabindex="0" role="group" aria-label="Кадры съёмки, листаются вбок">
+                      <figure class="shot" id="sh1-1"><img src="photo/filming/10/10.webp" width="769" height="903" loading="lazy" decoding="async" alt="Модель в оливковом жакете держит на руках рыжего спаниеля"></figure>
+                      <figure class="shot" id="sh1-2"><img src="photo/filming/10/20.webp" width="638" height="903" loading="lazy" decoding="async" alt="Разворот каталога: модель в шортах и кроссовках, рядом спаниель"></figure>
+                      <figure class="shot" id="sh1-3"><img src="photo/filming/10/30.webp" width="665" height="903" loading="lazy" decoding="async" alt="Крупный портрет модели рядом с далматином"></figure>
+                      <figure class="shot" id="sh1-4"><img src="photo/filming/10/40.webp" width="904" height="1280" loading="lazy" decoding="async" alt="Разворот каталога: модель на розовом диване, рядом далматин"></figure>
+                      <figure class="shot" id="sh1-5"><img src="photo/filming/10/50.webp" width="748" height="903" loading="lazy" decoding="async" alt="Мужская модель в чёрном пиджаке рядом с золотистым ретривером"></figure>
+                      <figure class="shot" id="sh1-6"><img src="photo/filming/10/60.webp" width="638" height="903" loading="lazy" decoding="async" alt="Разворот каталога: мужская модель и далматин в прыжке"></figure>
+                      <figure class="shot" id="sh1-7"><img src="photo/filming/10/70.webp" width="638" height="903" loading="lazy" decoding="async" alt="Модель в голубом кардигане рядом с корги"></figure>
+                      <figure class="shot" id="sh1-8"><img src="photo/filming/10/80.webp" width="638" height="903" loading="lazy" decoding="async" alt="Разворот каталога: модель на стуле, рядом два корги"></figure>
+                      <figure class="shot" id="sh1-9"><img src="photo/filming/10/Retouchd-24.webp" width="622" height="903" loading="lazy" decoding="async" alt="Модель на розовом диване, рядом лежит спаниель"></figure>
+                    </div>
+                    <nav class="shoot__dots" aria-label="Выбор кадра">
+                      <a href="#sh1-1" aria-label="Кадр 1"></a>
+                      <a href="#sh1-2" aria-label="Кадр 2"></a>
+                      <a href="#sh1-3" aria-label="Кадр 3"></a>
+                      <a href="#sh1-4" aria-label="Кадр 4"></a>
+                      <a href="#sh1-5" aria-label="Кадр 5"></a>
+                      <a href="#sh1-6" aria-label="Кадр 6"></a>
+                      <a href="#sh1-7" aria-label="Кадр 7"></a>
+                      <a href="#sh1-8" aria-label="Кадр 8"></a>
+                      <a href="#sh1-9" aria-label="Кадр 9"></a>
+                    </nav>
+                  </div>
                   <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span><span>9 кадров</span></p>
                     <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p>Съёмка каталога: женские и мужские образы, в кадре собаки.</p>
                     <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
                   </div>
                 </article>
                 <article class="proj__row">
-                  <div class="ph"><span>Съёмка 2</span></div>
+                  <div class="shoot">
+                    <div class="shoot__frame" tabindex="0" role="group" aria-label="Кадры съёмки, листаются вбок">
+                      <figure class="shot" id="sh2-1"><img src="photo/filming/20/10.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Бьюти-кадр: белые перчатки, локоны, светлая графика на веках"></figure>
+                      <figure class="shot" id="sh2-2"><img src="photo/filming/20/20.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Модель в белом топе, волосы в две пряди, белая стрелка на веке"></figure>
+                      <figure class="shot" id="sh2-3"><img src="photo/filming/20/30.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Белая перчатка закрывает половину лица, акцент на открытом глазе"></figure>
+                      <figure class="shot" id="sh2-4"><img src="photo/filming/20/40.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Портрет в белом: ровная кожа, белая графика на верхнем веке"></figure>
+                    </div>
+                    <nav class="shoot__dots" aria-label="Выбор кадра">
+                      <a href="#sh2-1" aria-label="Кадр 1"></a>
+                      <a href="#sh2-2" aria-label="Кадр 2"></a>
+                      <a href="#sh2-3" aria-label="Кадр 3"></a>
+                      <a href="#sh2-4" aria-label="Кадр 4"></a>
+                    </nav>
+                  </div>
                   <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span><span>4 кадра</span></p>
                     <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p>Бьюти-съёмка в белом: графичный макияж глаз и белые перчатки.</p>
                     <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
                   </div>
                 </article>
                 <article class="proj__row">
-                  <div class="ph"><span>Съёмка 3</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
+                  <div class="shoot">
+                    <div class="shoot__frame" tabindex="0" role="group" aria-label="Кадры съёмки, листаются вбок">
+                      <figure class="shot" id="sh3-1"><img src="photo/filming/30/10.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Модель с крыльями бабочки лежит на рояле под люстрой"></figure>
+                      <figure class="shot" id="sh3-2"><img src="photo/filming/30/20.webp" width="800" height="1200" loading="lazy" decoding="async" alt="Модель с крыльями бабочки среди зелени, венок в волосах"></figure>
+                      <figure class="shot" id="sh3-3"><img src="photo/filming/30/30.webp" width="800" height="533" loading="lazy" decoding="async" alt="Модель с крыльями в тёплом свете среди листвы"></figure>
+                    </div>
+                    <nav class="shoot__dots" aria-label="Выбор кадра">
+                      <a href="#sh3-1" aria-label="Кадр 1"></a>
+                      <a href="#sh3-2" aria-label="Кадр 2"></a>
+                      <a href="#sh3-3" aria-label="Кадр 3"></a>
+                    </nav>
                   </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 4</span></div>
                   <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
+                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span><span>3 кадра</span></p>
                     <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                  </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 5</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                  </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 6</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                  </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 7</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                  </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 8</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
-                    <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
-                  </div>
-                </article>
-                <article class="proj__row is-hidden">
-                  <div class="ph"><span>Съёмка 9</span></div>
-                  <div>
-                    <p class="proj__meta micro"><span>[бренд]</span><span>[месяц, год]</span></p>
-                    <h3>[название проекта]</h3>
-                    <p>[одна строка контекста: что за съёмка, сколько образов, какая задача стояла]</p>
+                    <p>Художественная съёмка: образ с крыльями, рояль и зелень.</p>
                     <p class="micro" style="margin-top:1rem;color:var(--ink-soft)">Фотограф · [имя]</p>
                   </div>
                 </article>
@@ -495,8 +458,7 @@
           </div>
 
           <figure class="about__figure rv" style="margin:0">
-            <!-- ЗАМЕНИТЬ: портрет Яны в студии -->
-            <div class="ph"><span>Портрет Яны<br>4:5</span></div>
+            <img src="photo/about/IMG_5956.webp" width="800" height="1186" loading="lazy" decoding="async" alt="Яна в чёрном пиджаке, руки скрещены, светлый фон студии">
           </figure>
         </div>
 
